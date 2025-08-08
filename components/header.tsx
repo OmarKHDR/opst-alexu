@@ -8,6 +8,7 @@ import { Menu, X } from 'lucide-react'
 
 const navigationItems = [
   { name: 'Home', path: '/' },
+  { name: 'About', path: '/about' },
   { name: 'Media', path: '/media' },
   { name: 'People', path: '/people' },
   { name: 'Research', path: '/research' },
@@ -15,7 +16,6 @@ const navigationItems = [
   { name: 'Opportunities', path: '/opportunities' },
   { name: 'Engagements', path: '/engagements' },
   { name: 'Contact', path: '/contact' },
-  { name: 'About', path: '/about' }
 ]
 
 export default function Header() {
