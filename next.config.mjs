@@ -1,6 +1,7 @@
 const nextConfig = {
   output: 'export',
   basePath: '/opst-alexu',
+  assetPrefix: "/opst-alexu/",
   eslint: {
     ignoreDuringBuilds: true,
   },
