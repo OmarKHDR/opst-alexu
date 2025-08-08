@@ -10,19 +10,19 @@ const researchTopics = [
     id: 1,
     title: "Research topic",
     content: "Aliquam tempor eros at felis tincidunt, at vehicula massa blandit. Vestibulum interdum mauris vel interdum ullamcorper. Proin vel nulla tincidunt, ornare lacus at, sodales leo. Aenean ut augue gravida, efficitur orci et, mattis ex. Mauris convallis tortor vel libero varius hendrerit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Duis gravida vel nulla lacinia dictum. Nulla convallis, leo quis vehicula pellentesque, augue odio tincidunt lorem, sed aliquet risus ligula non dolor.",
-    image: "/images/research-placeholder.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`
   },
   {
     id: 2,
     title: "Photonics Research",
     content: "Advanced photonics research focusing on optical communication systems and fiber optic technologies. Our team explores cutting-edge solutions for high-speed data transmission and optical signal processing applications in modern telecommunications infrastructure.",
-    image: "/images/research-placeholder.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`
   },
   {
     id: 3,
     title: "Solar Technology",
     content: "Innovative solar technology research aimed at improving efficiency and sustainability of photovoltaic systems. We develop next-generation solar cells and energy storage solutions for renewable energy applications.",
-    image: "/images/research-placeholder.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`
   }
 ]
 
@@ -112,7 +112,7 @@ export default function ResearchSection() {
                 {/* Image */}
                 <div className="relative h-48 sm:h-64 md:h-80 order-1 md:order-2">
                   <Image
-                    src={researchTopics[currentSlide].image || "/placeholder.svg"}
+                    src={researchTopics[currentSlide].image || `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder.svg`}
                     alt={researchTopics[currentSlide].title}
                     fill
                     className="object-cover rounded-lg"

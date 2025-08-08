@@ -7,7 +7,7 @@ export default function HeroSection() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/hero-background.png"
+          src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/hero-background.png`}
           alt="Research Laboratory"
           fill
           className="object-cover"

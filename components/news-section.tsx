@@ -12,7 +12,7 @@ const newsItems = [
     date: "10/10/2024",
     author: "hello world",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate dul quis porta gravida. Duis ex nunc, bibendum vitae elementum a, cursus sollicitudin nibh. Phasellus lectus enim, placerat ac tempor sit amet, finibus a velit.",
-    image: "/images/news-placeholder.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/news-placeholder.png`
   },
   {
     id: 2,
@@ -20,7 +20,7 @@ const newsItems = [
     date: "15/10/2024",
     author: "research team",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate dul quis porta gravida. Duis ex nunc, bibendum vitae elementum a, cursus sollicitudin nibh. Phasellus lectus enim, placerat ac tempor sit amet, finibus a velit.",
-    image: "/images/news-placeholder.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/news-placeholder.png`
   },
   {
     id: 3,
@@ -28,7 +28,7 @@ const newsItems = [
     date: "20/10/2024",
     author: "innovation lab",
     content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate dul quis porta gravida. Duis ex nunc, bibendum vitae elementum a, cursus sollicitudin nibh. Phasellus lectus enim, placerat ac tempor sit amet, finibus a velit.",
-    image: "/images/news-placeholder.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/news-placeholder.png`
   }
 ]
 
@@ -121,7 +121,7 @@ export default function NewsSection() {
                   {/* Image */}
                   <div className="relative h-48 sm:h-64 md:h-80 order-1 md:order-2">
                     <Image
-                      src={newsItems[currentSlide].image || "/placeholder.svg"}
+                      src={newsItems[currentSlide].image || `${process.env.NEXT_PUBLIC_BASE_PATH}/images/placeholder.svg`}
                       alt={newsItems[currentSlide].title}
                       fill
                       className="object-cover rounded-xl shadow-lg"
