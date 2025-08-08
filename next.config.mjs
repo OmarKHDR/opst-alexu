@@ -1,7 +1,6 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
-  basePath: "/opst-alexu",
+  output: 'export',
+  basePath: '/opst-alexu',
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -11,6 +10,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

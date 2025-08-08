@@ -17,7 +17,7 @@ export async function generateStaticParams() {
   return ids.map(id => ({ id }))
 }
 
-export default function ArticlePage({ params }: ArticlePageProps) {
+export default function ArticlePage({ params }: { params: { id: string } }) {
   return (
     <div className="min-h-screen">
       <Header />
