@@ -15,7 +15,7 @@ export default function PrincipalInvestigator() {
             {/* Profile Image */}
             <div className="w-48 md:w-64 h-60 md:h-80 flex-shrink-0">
               <Image
-                src="/professional-headshot.png"
+                src={`${process.env.NEXT_PUBLIC_BASE_PATH}/professional-headshot.png`}
                 alt="Prof. hello world"
                 width={256}
                 height={320}
