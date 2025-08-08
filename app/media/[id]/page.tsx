@@ -4,11 +4,6 @@ import RelatedArticles from '@/components/related-articles'
 import RelatedNews from '@/components/related-news'
 import Footer from '@/components/footer'
 
-interface ArticlePageProps {
-  params: {
-    id: string
-  }
-}
 
 export async function generateStaticParams() {
   // Provide list of article IDs to generate
