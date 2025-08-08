@@ -16,7 +16,7 @@ export default function AffiliationsOverview() {
             <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 text-center md:text-left">
               <div className="w-20 h-20 md:w-24 md:h-24 flex-shrink-0">
                 <Image
-                  src="/csmnp-logo.png"
+                  src={`${process.env.NEXT_PUBLIC_BASE_PATH}/csmnp-logo.png`}
                   alt="CSMNP Logo"
                   width={96}
                   height={96}
@@ -43,7 +43,7 @@ export default function AffiliationsOverview() {
               </div>
               <div className="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 order-1 md:order-2">
                 <Image
-                  src="/alexu-logo.png"
+                  src={`${process.env.NEXT_PUBLIC_BASE_PATH}/alexu-logo.png`}
                   alt="Alexandria University Logo"
                   width={96}
                   height={96}

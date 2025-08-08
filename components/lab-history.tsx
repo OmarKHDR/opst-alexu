@@ -30,13 +30,14 @@ const historyEvents = [
     title: "Some Event",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     side: "right",
-    image: "/colorful-network-visualization.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`
   },
   {
     year: "2019",
     title: "some event",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    side: "left"
+    side: "left",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`
   },
   {
     year: "2018",
@@ -104,7 +105,7 @@ export default function LabHistory() {
                         {event.image && (
                           <div className="w-full h-20 mb-3 rounded-lg overflow-hidden">
                             <Image
-                              src={event.image || "/placeholder.svg"}
+                              src={event.image || `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder.svg`}
                               alt={event.title}
                               width={200}
                               height={80}
@@ -141,7 +142,7 @@ export default function LabHistory() {
                         {event.image && (
                           <div className="w-full h-24 mb-4 rounded-xl overflow-hidden">
                             <Image
-                              src={event.image || "/placeholder.svg"}
+                              src={event.image || `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder.svg`}
                               alt={event.title}
                               width={200}
                               height={96}
