@@ -10,6 +10,13 @@ interface ArticlePageProps {
   }
 }
 
+export async function generateStaticParams() {
+  // Provide list of article IDs to generate
+  const ids = ['1', '2', '3'] // Fetch from a CMS or hardcode if needed
+
+  return ids.map(id => ({ id }))
+}
+
 export default function ArticlePage({ params }: ArticlePageProps) {
   return (
     <div className="min-h-screen">
