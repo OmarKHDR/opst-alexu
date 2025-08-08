@@ -10,6 +10,8 @@ export default function AboutSection() {
             <h2 className="font-merriweather text-3xl sm:text-4xl font-bold text-[#1A1A1A] mb-6">
               About us
             </h2>
+            {/* Mobile golden line */}
+            <div className="block md:hidden w-20 h-1 bg-[#FDB813] mb-6"></div>
           </div>
           
           {/* Right side - Content and button */}
