@@ -70,14 +70,14 @@ export default function ResearchTopicsSection({ onScrollToProjects }: ResearchTo
         </div>
 
         {/* Topics Grid */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto">
           {researchTopics.map((topic) => (
             <div 
               key={topic.id} 
-              className="bg-[#F8F8F8] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
+              className="bg-[#F8F8F8] rounded-xl sm:rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
             >
               {/* Topic Image */}
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative h-40 sm:h-48 overflow-hidden">
                 <Image
                   src={topic.image || "/placeholder.svg"}
                   alt={topic.title}
@@ -85,29 +85,29 @@ export default function ResearchTopicsSection({ onScrollToProjects }: ResearchTo
                   className="object-cover transition-transform duration-300 hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-4 left-4">
-                  <h3 className="font-merriweather text-2xl font-bold text-white mb-2">
+                <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4">
+                  <h3 className="font-merriweather text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1 sm:mb-2">
                     {topic.title}
                   </h3>
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-6">
-                <p className="font-inter text-[#555555] leading-relaxed mb-6">
+              <div className="p-4 sm:p-6">
+                <p className="font-inter text-sm sm:text-base text-[#555555] leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none">
                   {topic.description}
                 </p>
 
                 {/* Related Projects Preview */}
-                <div className="mb-6">
-                  <h4 className="font-inter text-sm font-semibold text-[#1A1A1A] mb-3">
+                <div className="mb-4 sm:mb-6">
+                  <h4 className="font-inter text-xs sm:text-sm font-semibold text-[#1A1A1A] mb-2 sm:mb-3">
                     Key Research Areas:
                   </h4>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {topic.projects.map((project, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-white text-[#555555] rounded-full text-sm font-inter border border-gray-200 shadow-sm"
+                        className="px-2 sm:px-3 py-1 bg-white text-[#555555] rounded-full text-xs sm:text-sm font-inter border border-gray-200 shadow-sm"
                       >
                         {project}
                       </span>
@@ -117,7 +117,7 @@ export default function ResearchTopicsSection({ onScrollToProjects }: ResearchTo
 
                 <Button 
                   onClick={() => handleScrollToProjects(topic.id)}
-                  className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-6 py-3 w-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 focus:ring-2 focus:ring-[#003366] focus:ring-offset-2"
+                  className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-3 sm:px-6 py-2 sm:py-3 w-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 focus:ring-2 focus:ring-[#003366] focus:ring-offset-2 text-xs sm:text-sm"
                 >
                   EXPLORE PROJECTS ON {topic.title.toUpperCase()}
                 </Button>

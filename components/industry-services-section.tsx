@@ -31,9 +31,9 @@ export default function IndustryServicesSection() {
         </div>
 
         {/* Services Grid */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-4xl mx-auto mb-6 sm:mb-8">
           {services.map((service) => (
-            <div key={service.id} className="relative h-64 rounded-lg overflow-hidden group cursor-pointer">
+            <div key={service.id} className="relative h-56 sm:h-64 rounded-xl sm:rounded-2xl overflow-hidden group cursor-pointer">
               {/* Background Image */}
               <div className="absolute inset-0">
                 <Image
@@ -46,11 +46,11 @@ export default function IndustryServicesSection() {
               </div>
               
               {/* Content */}
-              <div className="relative z-10 p-6 h-full flex flex-col justify-center text-white">
-                <h3 className="font-merriweather text-2xl font-bold mb-4">
+              <div className="relative z-10 p-4 sm:p-6 h-full flex flex-col justify-center text-white">
+                <h3 className="font-merriweather text-xl sm:text-2xl font-bold mb-2 sm:mb-4">
                   {service.title}
                 </h3>
-                <p className="font-inter text-sm leading-relaxed opacity-90">
+                <p className="font-inter text-xs sm:text-sm leading-relaxed opacity-90 line-clamp-4 sm:line-clamp-none">
                   {service.description}
                 </p>
               </div>
@@ -60,7 +60,7 @@ export default function IndustryServicesSection() {
 
         {/* Contact Button */}
         <div className="text-center">
-          <Button className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-8 py-3">
+          <Button className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-4 sm:px-8 py-2 sm:py-3 text-xs sm:text-sm w-full sm:w-auto">
             CONTACT US NOW
           </Button>
         </div>

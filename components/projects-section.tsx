@@ -161,33 +161,33 @@ export default function ProjectsSection({ selectedTopicId, onTopicChange }: Proj
 
         {/* Projects List */}
         <div className="max-w-4xl mx-auto">
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {displayedProjects.map((project) => (
               <div 
                 key={project.id} 
-                className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 transform hover:-translate-y-1 border border-gray-100"
+                className="bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-4 sm:p-6 transform hover:-translate-y-1 border border-gray-100"
               >
-                <div className="flex gap-6">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                   {/* Content */}
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between mb-3">
-                      <h3 className="font-merriweather text-xl font-bold text-[#1A1A1A]">
+                  <div className="flex-1 order-2 sm:order-1">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3">
+                      <h3 className="font-merriweather text-lg sm:text-xl font-bold text-[#1A1A1A] mb-2 sm:mb-0">
                         {project.name}
                       </h3>
-                      <span className="px-3 py-1 bg-[#3399FF]/10 text-[#003366] rounded-full text-xs font-inter font-medium border border-[#3399FF]/20 ml-4">
+                      <span className="px-2 sm:px-3 py-1 bg-[#3399FF]/10 text-[#003366] rounded-full text-xs font-inter font-medium border border-[#3399FF]/20 self-start sm:ml-4">
                         {project.category}
                       </span>
                     </div>
-                    <p className="font-inter text-[#555555] leading-relaxed mb-4">
+                    <p className="font-inter text-sm sm:text-base text-[#555555] leading-relaxed mb-3 sm:mb-4 line-clamp-3 sm:line-clamp-none">
                       {project.description}
                     </p>
                     
                     {/* Tags */}
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {project.tags.map((tag, index) => (
                         <span
                           key={index}
-                          className={`px-3 py-1 rounded-full text-sm font-inter shadow-sm ${
+                          className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-inter shadow-sm ${
                             tag === 'ongoing' ? 'bg-green-100 text-green-800 border border-green-200' :
                             tag === 'completed' ? 'bg-blue-100 text-blue-800 border border-blue-200' :
                             tag === 'funded' || tag === 'research grant' || tag === 'government funded' ? 'bg-purple-100 text-purple-800 border border-purple-200' :
@@ -203,7 +203,7 @@ export default function ProjectsSection({ selectedTopicId, onTopicChange }: Proj
                   </div>
 
                   {/* Image */}
-                  <div className="w-32 h-24 flex-shrink-0 overflow-hidden rounded-2xl shadow-md">
+                  <div className="w-full sm:w-32 h-32 sm:h-24 flex-shrink-0 overflow-hidden rounded-lg sm:rounded-2xl shadow-md order-1 sm:order-2">
                     <Image
                       src={project.image || "/placeholder.svg"}
                       alt={project.name}

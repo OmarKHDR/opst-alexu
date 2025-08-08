@@ -17,22 +17,22 @@ export default function CollaborativeWorkSection() {
             impact in the fields of optics, photonics, and solar technologies.
           </p>
           
-          <div className="mt-12 grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-merriweather text-xl font-bold text-[#1A1A1A] mb-4">
+          <div className="mt-8 sm:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+            <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+              <h3 className="font-merriweather text-lg sm:text-xl font-bold text-[#1A1A1A] mb-3 sm:mb-4">
                 Academic Partnerships
               </h3>
-              <p className="font-inter text-[#555555] leading-relaxed">
+              <p className="font-inter text-sm sm:text-base text-[#555555] leading-relaxed">
                 Collaborating with top universities and research institutions to advance 
                 scientific knowledge and foster academic excellence.
               </p>
             </div>
             
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-merriweather text-xl font-bold text-[#1A1A1A] mb-4">
+            <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+              <h3 className="font-merriweather text-lg sm:text-xl font-bold text-[#1A1A1A] mb-3 sm:mb-4">
                 Industry Collaboration
               </h3>
-              <p className="font-inter text-[#555555] leading-relaxed">
+              <p className="font-inter text-sm sm:text-base text-[#555555] leading-relaxed">
                 Working closely with industry leaders to translate research into 
                 practical applications and commercial solutions.
               </p>

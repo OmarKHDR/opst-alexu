@@ -163,7 +163,9 @@ export default function PublicationsSection() {
                 className="px-4 py-3 border border-gray-300 rounded-2xl hover:bg-[#F8F8F8] hover:border-[#FDB813] transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2"
                 aria-label="Filter options"
               >
-                <Search size={20} className="text-[#555555]" />
+                <svg className="w-5 h-5 text-[#555555]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
+                </svg>
               </button>
               
               {/* Mobile Filter Dropdown */}
@@ -225,16 +227,16 @@ export default function PublicationsSection() {
 
         {/* Publications List */}
         <div className="max-w-4xl mx-auto">
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {filteredPublications.map((publication) => (
               <div 
                 key={publication.id} 
-                className={`bg-[#F8F8F8] rounded-2xl overflow-hidden border-l-4 ${publication.color} shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 group`}
+                className={`bg-[#F8F8F8] rounded-xl sm:rounded-2xl overflow-hidden border-l-4 ${publication.color} shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 group`}
               >
                 {/* Publication Header */}
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="text-xs font-inter text-[#555555] mb-2 uppercase tracking-wide">
+                <div className="p-4 sm:p-6">
+                  <div className="flex items-start justify-between mb-2 sm:mb-3">
+                    <div className="text-xs font-inter text-[#555555] mb-1 sm:mb-2 uppercase tracking-wide">
                       {publication.type}
                     </div>
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -242,28 +244,28 @@ export default function PublicationsSection() {
                     </div>
                   </div>
                   
-                  <h3 className="font-merriweather text-xl font-bold text-[#1A1A1A] mb-3 group-hover:text-[#003366] transition-colors duration-200">
+                  <h3 className="font-merriweather text-lg sm:text-xl font-bold text-[#1A1A1A] mb-2 sm:mb-3 group-hover:text-[#003366] transition-colors duration-200">
                     {publication.title}
                   </h3>
                   
-                  <p className="font-inter text-[#555555] mb-4">
+                  <p className="font-inter text-sm sm:text-base text-[#555555] mb-3 sm:mb-4">
                     {publication.authors}
                   </p>
                   
                   {publication.supervisor && (
-                    <p className="font-inter text-sm text-[#555555] mb-4">
+                    <p className="font-inter text-xs sm:text-sm text-[#555555] mb-3 sm:mb-4">
                       {publication.supervisor}
                     </p>
                   )}
                   
                   {publication.journal && (
-                    <p className="font-inter text-sm text-[#555555] mb-4 font-medium">
+                    <p className="font-inter text-xs sm:text-sm text-[#555555] mb-3 sm:mb-4 font-medium">
                       {publication.journal}
                     </p>
                   )}
 
                   {/* Action Buttons */}
-                  <div className="flex flex-wrap gap-3 mb-4">
+                  <div className="flex flex-wrap gap-2 sm:gap-3 mb-3 sm:mb-4">
                     {publication.actions.map((action, index) => (
                       <Button
                         key={index}
@@ -279,11 +281,11 @@ export default function PublicationsSection() {
                 </div>
 
                 {/* Publication Details Bar */}
-                <div className="bg-[#003366] text-white px-6 py-3 group-hover:bg-[#003366]/90 transition-colors duration-200">
-                  <div className="grid grid-cols-3 gap-4 text-center">
+                <div className="bg-[#003366] text-white px-4 sm:px-6 py-2 sm:py-3 group-hover:bg-[#003366]/90 transition-colors duration-200">
+                  <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
                     <div>
                       <div className="font-inter text-xs opacity-75 mb-1">YEAR</div>
-                      <div className="font-inter text-sm font-medium">{publication.year}</div>
+                      <div className="font-inter text-xs sm:text-sm font-medium">{publication.year}</div>
                     </div>
                     <div>
                       <div className="font-inter text-xs opacity-75 mb-1">
@@ -292,7 +294,7 @@ export default function PublicationsSection() {
                          publication.place ? 'PLACE' : 
                          publication.status ? 'STATUS' : 'INFO'}
                       </div>
-                      <div className="font-inter text-sm font-medium">
+                      <div className="font-inter text-xs sm:text-sm font-medium">
                         {publication.impactFactor || publication.field || publication.place || publication.status || '-'}
                       </div>
                     </div>
@@ -301,7 +303,7 @@ export default function PublicationsSection() {
                         {publication.citations ? 'CITATIONS' : 
                          publication.defence ? 'DEFENCE' : 'INFO'}
                       </div>
-                      <div className="font-inter text-sm font-medium">
+                      <div className="font-inter text-xs sm:text-sm font-medium">
                         {publication.citations || publication.defence || '-'}
                       </div>
                     </div>

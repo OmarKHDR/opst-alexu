@@ -85,27 +85,27 @@ export default function MediaHero() {
       {/* Navigation Arrows */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 text-white hover:text-[#FDB813] transition-colors bg-black/20 hover:bg-black/40 rounded-full backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2"
+        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 text-white hover:text-[#FDB813] transition-colors bg-black/20 hover:bg-black/40 rounded-full backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2"
         aria-label="Previous featured item"
       >
-        <ChevronLeft size={32} />
+        <ChevronLeft size={24} className="sm:w-8 sm:h-8" />
       </button>
       
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 text-white hover:text-[#FDB813] transition-colors bg-black/20 hover:bg-black/40 rounded-full backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2"
+        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 text-white hover:text-[#FDB813] transition-colors bg-black/20 hover:bg-black/40 rounded-full backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2"
         aria-label="Next featured item"
       >
-        <ChevronRight size={32} />
+        <ChevronRight size={24} className="sm:w-8 sm:h-8" />
       </button>
 
-      {/* Content - Moved away from navigation buttons */}
+      {/* Content - Responsive positioning */}
       <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
-        <div className="max-w-2xl text-white ml-16 mr-16">
-          <h1 className="font-merriweather text-4xl md:text-5xl font-bold mb-6">
+        <div className="max-w-2xl text-white mx-4 sm:ml-16 sm:mr-16">
+          <h1 className="font-merriweather text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
             {featuredItems[currentSlide].title}
           </h1>
-          <p className="font-inter text-lg leading-relaxed opacity-90">
+          <p className="font-inter text-sm sm:text-base md:text-lg leading-relaxed opacity-90 line-clamp-3 sm:line-clamp-none">
             {featuredItems[currentSlide].content}
           </p>
         </div>

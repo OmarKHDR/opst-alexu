@@ -104,28 +104,28 @@ export default function ContributorsSection() {
         </div>
 
         {/* Contributor Carousel */}
-        <div className="max-w-6xl mx-auto relative px-16" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div className="max-w-6xl mx-auto relative px-4 sm:px-16" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           {/* Navigation Arrows - Outside the card */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-4 text-[#555555] hover:text-[#003366] transition-colors bg-white hover:bg-[#F8F8F8] rounded-full shadow-xl hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 transform hover:scale-110"
+            className="absolute left-0 sm:left-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-4 text-[#555555] hover:text-[#003366] transition-colors bg-white hover:bg-[#F8F8F8] rounded-full shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 transform hover:scale-110"
             aria-label="Previous contributor"
           >
-            <ChevronLeft size={28} />
+            <ChevronLeft size={20} className="sm:w-7 sm:h-7" />
           </button>
           
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-4 text-[#555555] hover:text-[#003366] transition-colors bg-white hover:bg-[#F8F8F8] rounded-full shadow-xl hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 transform hover:scale-110"
+            className="absolute right-0 sm:right-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-4 text-[#555555] hover:text-[#003366] transition-colors bg-white hover:bg-[#F8F8F8] rounded-full shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 transform hover:scale-110"
             aria-label="Next contributor"
           >
-            <ChevronRight size={28} />
+            <ChevronRight size={20} className="sm:w-7 sm:h-7" />
           </button>
 
-          <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 p-8 md:p-10 border border-gray-100 transform hover:-translate-y-1">
-            <div className="flex flex-col lg:flex-row gap-8 items-center">
+          <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 p-4 sm:p-6 md:p-8 lg:p-10 border border-gray-100 transform hover:-translate-y-1">
+            <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 items-center">
               {/* Profile Image */}
-              <div className="w-64 h-80 flex-shrink-0 overflow-hidden rounded-2xl shadow-lg">
+              <div className="w-full sm:w-64 h-48 sm:h-64 md:h-80 flex-shrink-0 overflow-hidden rounded-xl sm:rounded-2xl shadow-lg">
                 <Image
                   src={currentContributor.image || "/placeholder.svg"}
                   alt={`${currentContributor.name} profile photo`}
@@ -137,63 +137,63 @@ export default function ContributorsSection() {
 
               {/* Content */}
               <div className="flex-1 text-center lg:text-left">
-                <h3 className="font-merriweather text-3xl font-bold text-[#1A1A1A] mb-4">
+                <h3 className="font-merriweather text-2xl sm:text-3xl font-bold text-[#1A1A1A] mb-3 sm:mb-4">
                   {currentContributor.name}
                 </h3>
                 
                 {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-4 justify-center lg:justify-start">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4 justify-center lg:justify-start">
                   {currentContributor.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-4 py-2 bg-[#FDB813]/10 text-[#003366] rounded-full text-sm font-inter font-medium border border-[#FDB813]/20 shadow-sm hover:shadow-md transition-shadow"
+                      className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#FDB813]/10 text-[#003366] rounded-full text-xs sm:text-sm font-inter font-medium border border-[#FDB813]/20 shadow-sm hover:shadow-md transition-shadow"
                     >
                       {tag}
                     </span>
                   ))}
                 </div>
 
-                <p className="font-inter text-[#555555] mb-4 font-medium">
+                <p className="font-inter text-sm sm:text-base text-[#555555] mb-3 sm:mb-4 font-medium">
                   {currentContributor.affiliation}
                 </p>
 
-                <p className="font-inter text-[#555555] leading-relaxed mb-8">
+                <p className="font-inter text-sm sm:text-base text-[#555555] leading-relaxed mb-6 sm:mb-8 line-clamp-4 sm:line-clamp-none">
                   {currentContributor.description}
                 </p>
 
                 {/* Social Links */}
-                <div className="flex gap-3 justify-center lg:justify-start">
+                <div className="flex gap-2 sm:gap-3 justify-center lg:justify-start">
                   <a
                     href={currentContributor.cv}
-                    className="p-3 border border-gray-300 rounded-2xl hover:bg-[#F8F8F8] hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group shadow-sm hover:shadow-lg transform hover:-translate-y-1"
+                    className="p-2 sm:p-3 border border-gray-300 rounded-xl sm:rounded-2xl hover:bg-[#F8F8F8] hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group shadow-sm hover:shadow-lg transform hover:-translate-y-1"
                     title="Download CV"
                     aria-label={`Download ${currentContributor.name}'s CV`}
                   >
-                    <FileText size={20} className="text-[#555555] group-hover:text-[#003366] transition-colors" />
+                    <FileText size={16} className="sm:w-5 sm:h-5 text-[#555555] group-hover:text-[#003366] transition-colors" />
                   </a>
                   <a
                     href={currentContributor.linkedin}
-                    className="p-3 border border-gray-300 rounded-2xl hover:bg-[#F8F8F8] hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group shadow-sm hover:shadow-lg transform hover:-translate-y-1"
+                    className="p-2 sm:p-3 border border-gray-300 rounded-xl sm:rounded-2xl hover:bg-[#F8F8F8] hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group shadow-sm hover:shadow-lg transform hover:-translate-y-1"
                     title="LinkedIn Profile"
                     aria-label={`Visit ${currentContributor.name}'s LinkedIn profile`}
                   >
-                    <Linkedin size={20} className="text-[#555555] group-hover:text-[#003366] transition-colors" />
+                    <Linkedin size={16} className="sm:w-5 sm:h-5 text-[#555555] group-hover:text-[#003366] transition-colors" />
                   </a>
                   <a
                     href={currentContributor.orcid}
-                    className="p-3 border border-gray-300 rounded-2xl hover:bg-[#F8F8F8] hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group shadow-sm hover:shadow-lg transform hover:-translate-y-1"
+                    className="p-2 sm:p-3 border border-gray-300 rounded-xl sm:rounded-2xl hover:bg-[#F8F8F8] hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group shadow-sm hover:shadow-lg transform hover:-translate-y-1"
                     title="ORCID Profile"
                     aria-label={`Visit ${currentContributor.name}'s ORCID profile`}
                   >
-                    <Globe size={20} className="text-[#555555] group-hover:text-[#003366] transition-colors" />
+                    <Globe size={16} className="sm:w-5 sm:h-5 text-[#555555] group-hover:text-[#003366] transition-colors" />
                   </a>
                   <a
                     href={`mailto:${currentContributor.email}`}
-                    className="p-3 border border-gray-300 rounded-2xl hover:bg-[#F8F8F8] hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group shadow-sm hover:shadow-lg transform hover:-translate-y-1"
+                    className="p-2 sm:p-3 border border-gray-300 rounded-xl sm:rounded-2xl hover:bg-[#F8F8F8] hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group shadow-sm hover:shadow-lg transform hover:-translate-y-1"
                     title="Send Email"
                     aria-label={`Send email to ${currentContributor.name}`}
                   >
-                    <Mail size={20} className="text-[#555555] group-hover:text-[#003366] transition-colors" />
+                    <Mail size={16} className="sm:w-5 sm:h-5 text-[#555555] group-hover:text-[#003366] transition-colors" />
                   </a>
                 </div>
               </div>

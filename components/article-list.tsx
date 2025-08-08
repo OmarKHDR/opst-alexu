@@ -62,28 +62,28 @@ export default function ArticleList() {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           {/* Articles List */}
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {currentArticles.map((article) => (
-              <article key={article.id} className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex gap-6">
-                  <div className="flex-1">
-                    <h3 className="font-merriweather text-2xl font-bold text-[#1A1A1A] mb-2">
+              <article key={article.id} className="bg-white rounded-lg p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                  <div className="flex-1 order-2 sm:order-1">
+                    <h3 className="font-merriweather text-xl sm:text-2xl font-bold text-[#1A1A1A] mb-2">
                       {article.title}
                     </h3>
-                    <p className="font-inter text-sm text-[#FDB813] mb-4">
+                    <p className="font-inter text-sm text-[#FDB813] mb-3 sm:mb-4">
                       {article.author}
                     </p>
-                    <p className="font-inter text-[#555555] leading-relaxed mb-4">
+                    <p className="font-inter text-sm sm:text-base text-[#555555] leading-relaxed mb-3 sm:mb-4 line-clamp-3 sm:line-clamp-none">
                       {article.excerpt}
                     </p>
                     <Link 
                       href={`/media/${article.id}`}
-                      className="font-inter text-[#3399FF] hover:text-[#003366] transition-colors font-medium"
+                      className="font-inter text-[#3399FF] hover:text-[#003366] transition-colors font-medium text-sm sm:text-base"
                     >
                       Read More
                     </Link>
                   </div>
-                  <div className="w-32 h-24 flex-shrink-0">
+                  <div className="w-full sm:w-32 h-48 sm:h-24 flex-shrink-0 order-1 sm:order-2">
                     <Image
                       src={article.image || "/placeholder.svg"}
                       alt={article.title}

@@ -21,13 +21,13 @@ export default function PublicationsHeader() {
         </div>
 
         {/* Statistics */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6 max-w-4xl mx-auto">
           {statistics.map((stat, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg shadow-sm text-center">
-              <div className="font-merriweather text-3xl font-bold text-[#003366] mb-2">
+            <div key={index} className="bg-white p-3 sm:p-4 lg:p-6 rounded-lg shadow-sm text-center">
+              <div className="font-merriweather text-xl sm:text-2xl lg:text-3xl font-bold text-[#003366] mb-1 sm:mb-2">
                 {stat.number}
               </div>
-              <div className="font-inter text-sm text-[#555555]">
+              <div className="font-inter text-xs sm:text-sm text-[#555555]">
                 {stat.label}
               </div>
             </div>

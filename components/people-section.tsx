@@ -253,90 +253,95 @@ export default function PeopleSection() {
         )}
 
         {/* People Grid */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
           {currentPeople.map((person) => (
             <div 
               key={person.id} 
-              className="bg-[#F8F8F8] rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 focus-within:ring-2 focus-within:ring-[#FDB813] focus-within:ring-offset-2"
+              className="bg-[#F8F8F8] rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 focus-within:ring-2 focus-within:ring-[#FDB813] focus-within:ring-offset-2"
             >
-              {/* Profile Image */}
-              <div className="w-full h-48 mb-6 overflow-hidden rounded-xl">
-                <Image
-                  src={person.image || "/placeholder.svg"}
-                  alt={`${person.name} profile photo`}
-                  width={300}
-                  height={192}
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                />
-              </div>
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                {/* Profile Image */}
+                <div className="w-full sm:w-1/3 h-48 sm:h-auto overflow-hidden rounded-lg sm:rounded-xl">
+                  <Image
+                    src={person.image || "/placeholder.svg"}
+                    alt={`${person.name} profile photo`}
+                    width={300}
+                    height={192}
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
 
-              {/* Content */}
-              <div className="mb-3">
-                <h3 className="font-merriweather text-xl font-bold text-[#1A1A1A] mb-1">
-                  {person.name}
-                </h3>
-                <p className="font-inter text-[#003366] font-semibold text-sm mb-1">
-                  {person.title}
-                </p>
-                <p className="font-inter text-[#555555] text-sm font-medium">
-                  {person.degree}
-                </p>
-              </div>
+                {/* Content Container */}
+                <div className="flex-1 flex flex-col">
+                  {/* Basic Info */}
+                  <div className="mb-2 sm:mb-3">
+                    <h3 className="font-merriweather text-lg sm:text-xl font-bold text-[#1A1A1A] mb-1">
+                      {person.name}
+                    </h3>
+                    <p className="font-inter text-[#003366] font-semibold text-xs sm:text-sm mb-1">
+                      {person.title}
+                    </p>
+                    <p className="font-inter text-[#555555] text-xs sm:text-sm font-medium">
+                      {person.degree}
+                    </p>
+                  </div>
 
-              {/* Tags */}
-              <div className="flex flex-wrap gap-2 mb-3">
-                {person.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-white text-[#555555] rounded-full text-sm font-inter border border-gray-200 shadow-sm"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                    {person.tags.map((tag, index) => (
+                      <span
+                        key={index}
+                        className="px-2 sm:px-3 py-1 bg-white text-[#555555] rounded-full text-xs sm:text-sm font-inter border border-gray-200 shadow-sm"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
 
-              <p className="font-inter text-[#555555] mb-3 font-medium text-sm">
-                {person.affiliation}
-              </p>
+                  <p className="font-inter text-[#555555] mb-2 sm:mb-3 font-medium text-xs sm:text-sm">
+                    {person.affiliation}
+                  </p>
 
-              <p className="font-inter text-[#555555] leading-relaxed mb-6 text-sm">
-                {person.description}
-              </p>
+                  <p className="font-inter text-[#555555] leading-relaxed mb-4 sm:mb-6 text-xs sm:text-sm line-clamp-3 sm:line-clamp-none">
+                    {person.description}
+                  </p>
 
-              {/* Social Links */}
-              <div className="flex gap-3">
-                <a
-                  href={person.cv}
-                  className="p-2 border border-gray-300 rounded-lg hover:bg-white hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group"
-                  title="Download CV"
-                  aria-label={`Download ${person.name}'s CV`}
-                >
-                  <FileText size={16} className="text-[#555555] group-hover:text-[#003366] transition-colors" />
-                </a>
-                <a
-                  href={person.linkedin}
-                  className="p-2 border border-gray-300 rounded-lg hover:bg-white hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group"
-                  title="LinkedIn Profile"
-                  aria-label={`Visit ${person.name}'s LinkedIn profile`}
-                >
-                  <Linkedin size={16} className="text-[#555555] group-hover:text-[#003366] transition-colors" />
-                </a>
-                <a
-                  href={person.orcid}
-                  className="p-2 border border-gray-300 rounded-lg hover:bg-white hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group"
-                  title="ORCID Profile"
-                  aria-label={`Visit ${person.name}'s ORCID profile`}
-                >
-                  <Globe size={16} className="text-[#555555] group-hover:text-[#003366] transition-colors" />
-                </a>
-                <a
-                  href={`mailto:${person.email}`}
-                  className="p-2 border border-gray-300 rounded-lg hover:bg-white hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group"
-                  title="Send Email"
-                  aria-label={`Send email to ${person.name}`}
-                >
-                  <Mail size={16} className="text-[#555555] group-hover:text-[#003366] transition-colors" />
-                </a>
+                  {/* Social Links */}
+                  <div className="flex gap-2 sm:gap-3 mt-auto">
+                    <a
+                      href={person.cv}
+                      className="p-1.5 sm:p-2 border border-gray-300 rounded-lg hover:bg-white hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group"
+                      title="Download CV"
+                      aria-label={`Download ${person.name}'s CV`}
+                    >
+                      <FileText size={14} className="sm:w-4 sm:h-4 text-[#555555] group-hover:text-[#003366] transition-colors" />
+                    </a>
+                    <a
+                      href={person.linkedin}
+                      className="p-1.5 sm:p-2 border border-gray-300 rounded-lg hover:bg-white hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group"
+                      title="LinkedIn Profile"
+                      aria-label={`Visit ${person.name}'s LinkedIn profile`}
+                    >
+                      <Linkedin size={14} className="sm:w-4 sm:h-4 text-[#555555] group-hover:text-[#003366] transition-colors" />
+                    </a>
+                    <a
+                      href={person.orcid}
+                      className="p-1.5 sm:p-2 border border-gray-300 rounded-lg hover:bg-white hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group"
+                      title="ORCID Profile"
+                      aria-label={`Visit ${person.name}'s ORCID profile`}
+                    >
+                      <Globe size={14} className="sm:w-4 sm:h-4 text-[#555555] group-hover:text-[#003366] transition-colors" />
+                    </a>
+                    <a
+                      href={`mailto:${person.email}`}
+                      className="p-1.5 sm:p-2 border border-gray-300 rounded-lg hover:bg-white hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group"
+                      title="Send Email"
+                      aria-label={`Send email to ${person.name}`}
+                    >
+                      <Mail size={14} className="sm:w-4 sm:h-4 text-[#555555] group-hover:text-[#003366] transition-colors" />
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
