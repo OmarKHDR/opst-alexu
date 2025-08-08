@@ -29,6 +29,9 @@ jobs:
       - name: Clean output directory 🧹
         run: rm -rf out
 
+      - name: Set ENV manually
+        run: echo "NEXT_PUBLIC_BASE_PATH=/opst-alexu" >> $GITHUB_ENV
+
       - name: Build with Next.js 🏗️
         run: npm run build
 
