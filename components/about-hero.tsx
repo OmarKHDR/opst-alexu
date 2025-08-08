@@ -5,7 +5,7 @@ export default function AboutHero() {
       <div className="absolute inset-0 z-0">
         <div 
           className="w-full h-full bg-cover bg-center"
-          style={{ backgroundImage: 'url(${process.env.NEXT_PUBLIC_BASE_PATH}/ourstory-background.png)' }}
+          style={{ backgroundImage: `${process.env.NEXT_PUBLIC_BASE_PATH}/ourstory-background.png`}}
         ></div>
         <div className="absolute inset-0 bg-black/60"></div>
       </div>
