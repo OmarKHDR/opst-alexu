@@ -26,7 +26,7 @@ export default function Footer() {
               <p>+201001101010</p>
               <p>
                 <Link 
-                  href="#" 
+                  href="/contact" 
                   className="hover:text-[#FDB813] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] rounded"
                 >
                   Contact form
@@ -96,7 +96,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-center gap-4">
             <div className="flex items-center space-x-4">
               <Image
-                src="/images/opst-logo-new.png"
+                src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/opst-logo-new.png`}
                 alt="OPST Lab"
                 width={80}
                 height={30}
