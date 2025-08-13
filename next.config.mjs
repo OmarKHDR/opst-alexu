@@ -1,7 +1,9 @@
+const isExport = process.env.NEXT_EXPORT === 'true';
+
 const nextConfig = {
   output: 'export',
-  basePath: '/opst-alexu',
-  assetPrefix: "/opst-alexu/",
+  basePath: isExport ? '' : '/opst-alexu',
+    assetPrefix: isExport ? '' : '/opst-alexu',
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -11,6 +13,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  env: {
+    NEXT_PUBLIC_BASE_PATH: isExport ? '' : '/opst-alexu'
+  },
 };
+
 
 export default nextConfig;

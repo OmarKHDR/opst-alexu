@@ -31,6 +31,9 @@ jobs:
 
       - name: Set ENV manually
         run: echo "NEXT_PUBLIC_BASE_PATH=/opst-alexu" >> $GITHUB_ENV
+      
+      - name: set ENV for static github export with correct asset path
+        run: echo "NEXT_EXPORT=false" >> $GITHUB_ENV
 
       - name: Build with Next.js 🏗️
         run: npm run build
