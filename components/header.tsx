@@ -41,7 +41,7 @@ export default function Header() {
           <div className="flex items-center">
             <Link href="/" className="focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] rounded">
               <Image
-                src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/opst-logo-new.png`}
+                src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/opst-logo.svg`}
                 alt="OPST Lab"
                 width={120}
                 height={40}
