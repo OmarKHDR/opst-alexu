@@ -11,7 +11,7 @@ const jobOpportunities = [
     company: "TechCorp Solutions",
     description: "Lead optical systems design and development for next-generation communication technologies. Requires expertise in fiber optics, laser systems, and photonic device integration with 5+ years experience.",
     tags: ["hybrid", "full time", "60$ - 80$ /hour", "Senior"],
-    logo: "/company-placeholder.png",
+    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
     location: "Cairo, Egypt",
     type: "Engineering",
     experience: "5+ years"
@@ -22,7 +22,7 @@ const jobOpportunities = [
     company: "Innovation Labs",
     description: "Conduct cutting-edge research in photonic materials and devices. Opportunity to work on breakthrough technologies in quantum optics and advanced communication systems.",
     tags: ["onsite", "full time", "45$ - 65$ /hour", "Scientist"],
-    logo: "/company-placeholder.png",
+    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
     location: "Alexandria, Egypt",
     type: "Research",
     experience: "3+ years"
@@ -33,7 +33,7 @@ const jobOpportunities = [
     company: "GreenTech Energy",
     description: "Develop and optimize solar energy systems and photovoltaic technologies. Focus on improving efficiency and sustainability of renewable energy solutions.",
     tags: ["remote", "full time", "35$ - 50$ /hour", "Specialist"],
-    logo: "/company-placeholder.png",
+    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
     location: "Remote",
     type: "Energy",
     experience: "2+ years"
@@ -44,7 +44,7 @@ const jobOpportunities = [
     company: "DataFlow Systems",
     description: "Design and implement high-speed optical communication networks. Work with advanced fiber optic systems and network optimization technologies.",
     tags: ["onsite", "full time", "40$ - 60$ /hour", "Engineer"],
-    logo: "/company-placeholder.png",
+    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
     location: "Giza, Egypt",
     type: "Communications",
     experience: "3+ years"
@@ -55,7 +55,7 @@ const jobOpportunities = [
     company: "StartupTech",
     description: "Entry-level position for recent graduates in photonics or related fields. Opportunity to work on innovative projects and grow with a dynamic team.",
     tags: ["onsite", "full time", "25$ - 35$ /hour", "Junior"],
-    logo: "/company-placeholder.png",
+    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
     location: "Alexandria, Egypt",
     type: "Engineering",
     experience: "0-2 years"
@@ -66,7 +66,7 @@ const jobOpportunities = [
     company: "Precision Optics",
     description: "Maintain and operate advanced laser systems for industrial and research applications. Requires technical expertise and attention to detail.",
     tags: ["onsite", "full time", "30$ - 40$ /hour", "Technician"],
-    logo: "/company-placeholder.png",
+    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
     location: "Cairo, Egypt",
     type: "Technical",
     experience: "2+ years"
@@ -77,7 +77,7 @@ const jobOpportunities = [
     company: "EcoSolutions",
     description: "Provide consulting services for renewable energy projects with focus on solar and photonic technologies. Client-facing role with travel opportunities.",
     tags: ["hybrid", "full time", "50$ - 70$ /hour", "Consultant"],
-    logo: "/company-placeholder.png",
+    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
     location: "Multiple Cities",
     type: "Consulting",
     experience: "4+ years"
@@ -88,7 +88,7 @@ const jobOpportunities = [
     company: "VisionTech",
     description: "Design optical systems for consumer electronics and industrial applications. Work with cutting-edge CAD software and prototyping equipment.",
     tags: ["onsite", "full time", "45$ - 60$ /hour", "Designer"],
-    logo: "/company-placeholder.png",
+    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
     location: "Alexandria, Egypt",
     type: "Design",
     experience: "3+ years"

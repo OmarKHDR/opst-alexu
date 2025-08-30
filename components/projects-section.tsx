@@ -19,7 +19,7 @@ const projects = [
     name: "Advanced Fiber Optic Networks",
     description: "Development of next-generation fiber optic communication systems with enhanced signal processing capabilities and reduced latency for global telecommunications infrastructure.",
     tags: ["ongoing", "funded", "Telecom Corp", "High Priority"],
-    image: "/colorful-network-visualization.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`,
     category: "Optical Communications",
     topicId: 1
   },
@@ -28,7 +28,7 @@ const projects = [
     name: "Integrated Photonic Circuits",
     description: "Design and fabrication of miniaturized photonic integrated circuits for high-speed optical computing and data processing applications in modern electronic systems.",
     tags: ["ongoing", "research grant", "Tech Institute", "Innovation"],
-    image: "/colorful-network-visualization.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`,
     category: "Photonic Devices",
     topicId: 2
   },
@@ -37,7 +37,7 @@ const projects = [
     name: "High-Efficiency Solar Cells",
     description: "Revolutionary photovoltaic cell designs achieving record-breaking efficiency rates through advanced material engineering and optimized light absorption techniques.",
     tags: ["completed", "published", "Energy Corp", "Breakthrough"],
-    image: "/colorful-network-visualization.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`,
     category: "Solar Technology",
     topicId: 3
   },
@@ -46,7 +46,7 @@ const projects = [
     name: "Quantum Communication Systems",
     description: "Secure quantum communication networks utilizing quantum entanglement and cryptographic protocols for ultra-secure data transmission and quantum internet applications.",
     tags: ["ongoing", "government funded", "Defense Research", "Classified"],
-    image: "/colorful-network-visualization.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`,
     category: "Quantum Optics",
     topicId: 4
   },
@@ -55,7 +55,7 @@ const projects = [
     name: "Optical Signal Processing",
     description: "Advanced algorithms and hardware solutions for real-time optical signal processing in high-bandwidth communication systems and network optimization.",
     tags: ["ongoing", "industry partnership", "Network Solutions", "Commercial"],
-    image: "/colorful-network-visualization.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`,
     category: "Optical Communications",
     topicId: 1
   },
@@ -64,7 +64,7 @@ const projects = [
     name: "Laser System Development",
     description: "Cutting-edge laser technologies for industrial, medical, and research applications with improved power efficiency and beam quality characteristics.",
     tags: ["completed", "patent pending", "Medical Tech", "Innovation"],
-    image: "/colorful-network-visualization.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`,
     category: "Photonic Devices",
     topicId: 2
   }
@@ -205,7 +205,7 @@ export default function ProjectsSection({ selectedTopicId, onTopicChange }: Proj
                   {/* Image */}
                   <div className="w-full sm:w-32 h-32 sm:h-24 flex-shrink-0 overflow-hidden rounded-lg sm:rounded-2xl shadow-md order-1 sm:order-2">
                     <Image
-                      src={project.image || "/placeholder.svg"}
+                      src={project.image || `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder.svg`}
                       alt={project.name}
                       width={128}
                       height={96}

@@ -11,7 +11,7 @@ const programs = [
     capacity: "25 Students",
     applicationStatus: "opened",
     startDate: "June 2025",
-    image: "/students-working-lab.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/students-working-lab.png`,
     buttonText: "APPLY NOW",
     highlights: ["Hands-on Lab Experience", "Research Methodology", "Faculty Mentorship", "Certificate of Completion"]
   },
@@ -23,7 +23,7 @@ const programs = [
     capacity: "5 Teams",
     applicationStatus: "opened",
     startDate: "September 2025",
-    image: "/students-library-study.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/students-library-study.png`,
     buttonText: "APPLY NOW",
     highlights: ["Project Supervision", "Technical Resources", "Methodology Support", "Thesis Assistance"]
   }
@@ -58,7 +58,7 @@ export default function StudentProgramsSection() {
                 {/* Program Image */}
                 <div className="relative h-40 sm:h-48 overflow-hidden">
                   <Image
-                    src={program.image || "/placeholder.svg"}
+                    src={program.image || `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder.svg`}
                     alt={program.title}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"

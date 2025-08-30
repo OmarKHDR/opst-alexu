@@ -24,7 +24,7 @@ const people = [
     tags: ["Optical Communications", "Fiber Optics", "Signal Processing"],
     affiliation: "Affiliated with Alexandria University",
     description: "Leading expert in optical communication systems with over 20 years of research experience. Specializes in advanced fiber optic technologies and high-speed data transmission systems.",
-    image: "/professional-headshot.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/professional-headshot.png`,
     category: "Professor",
     cv: "#",
     linkedin: "#",
@@ -39,7 +39,7 @@ const people = [
     tags: ["Photonic Devices", "Laser Systems", "Quantum Optics"],
     affiliation: "Affiliated with Alexandria University",
     description: "Renowned researcher in photonic device development and quantum optical systems. Her work focuses on next-generation laser technologies and their applications.",
-    image: "/professional-headshot.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/professional-headshot.png`,
     category: "Associate Professor",
     cv: "#",
     linkedin: "#",
@@ -54,7 +54,7 @@ const people = [
     tags: ["Solar Cells", "Renewable Energy", "Materials Science"],
     affiliation: "Affiliated with Alexandria University",
     description: "Specialist in solar technology and renewable energy systems. Research focuses on improving photovoltaic efficiency and developing sustainable energy solutions.",
-    image: "/professional-headshot.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/professional-headshot.png`,
     category: "Assistant Professor",
     cv: "#",
     linkedin: "#",
@@ -69,7 +69,7 @@ const people = [
     tags: ["Machine Learning", "Optical Networks", "AI Applications"],
     affiliation: "Affiliated with Alexandria University",
     description: "PhD candidate researching machine learning applications in optical communication networks. Working on AI-driven optimization of fiber optic systems.",
-    image: "/professional-headshot.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/professional-headshot.png`,
     category: "PhD Student",
     cv: "#",
     linkedin: "#",
@@ -84,7 +84,7 @@ const people = [
     tags: ["Photonic Crystals", "Optical Sensors", "Device Fabrication"],
     affiliation: "Affiliated with Alexandria University",
     description: "Master's student focusing on photonic crystal structures and their applications in optical sensing. Research involves novel device fabrication techniques.",
-    image: "/professional-headshot.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/professional-headshot.png`,
     category: "Master Student",
     cv: "#",
     linkedin: "#",
@@ -99,7 +99,7 @@ const people = [
     tags: ["Laboratory Management", "Equipment Maintenance", "Data Analysis"],
     affiliation: "Affiliated with Alexandria University",
     description: "Research assistant supporting laboratory operations and experimental research. Specializes in equipment maintenance and data analysis for optical experiments.",
-    image: "/professional-headshot.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/professional-headshot.png`,
     category: "Research Assistant",
     cv: "#",
     linkedin: "#",
@@ -263,7 +263,7 @@ export default function PeopleSection() {
                 {/* Profile Image */}
                 <div className="w-full sm:w-1/3 h-48 sm:h-auto overflow-hidden rounded-lg sm:rounded-xl">
                   <Image
-                    src={person.image || "/placeholder.svg"}
+                    src={person.image || `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder.svg`}
                     alt={`${person.name} profile photo`}
                     width={300}
                     height={192}

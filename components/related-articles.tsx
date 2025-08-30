@@ -8,7 +8,7 @@ const relatedArticlesData = [
     author: "Dr. Lisa Wang",
     date: "25/10/2024",
     excerpt: "Exploring the latest developments in laser technology and their applications in scientific research.",
-    image: "/laboratory-research-equipment.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/laboratory-research-equipment.png`,
     readTime: "6 min read"
   },
   {
@@ -17,7 +17,7 @@ const relatedArticlesData = [
     author: "Prof. Robert Kim",
     date: "28/10/2024",
     excerpt: "How quantum optical systems are revolutionizing computational capabilities and information processing.",
-    image: "/laboratory-research-equipment.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/laboratory-research-equipment.png`,
     readTime: "8 min read"
   },
   {
@@ -26,7 +26,7 @@ const relatedArticlesData = [
     author: "Dr. Maria Rodriguez",
     date: "30/10/2024",
     excerpt: "Innovative approaches to renewable energy generation using advanced photonic technologies.",
-    image: "/laboratory-research-equipment.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/laboratory-research-equipment.png`,
     readTime: "5 min read"
   }
 ]

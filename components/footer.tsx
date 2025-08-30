@@ -39,14 +39,14 @@ export default function Footer() {
           <div>
             <h3 className="font-merriweather text-xl font-bold mb-6">Quick Links</h3>
             <div className="space-y-3 font-inter">
-              <p><Link href="/media" className="hover:text-[#FDB813] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] rounded">News and Blogs</Link></p>
+              <p><Link href="/about" className="hover:text-[#FDB813] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] rounded">About us</Link></p>
+              <p><Link href="/media" className="hover:text-[#FDB813] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] rounded">Media</Link></p>
               <p><Link href="/people" className="hover:text-[#FDB813] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] rounded">People</Link></p>
               <p><Link href="/research" className="hover:text-[#FDB813] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] rounded">Research</Link></p>
               <p><Link href="/publication" className="hover:text-[#FDB813] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] rounded">Publication</Link></p>
               <p><Link href="/opportunities" className="hover:text-[#FDB813] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] rounded">Opportunities</Link></p>
               <p><Link href="/engagements" className="hover:text-[#FDB813] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] rounded">Engagement</Link></p>
               <p><Link href="/contact" className="hover:text-[#FDB813] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] rounded">Contacts</Link></p>
-              <p><Link href="/about" className="hover:text-[#FDB813] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] rounded">About us</Link></p>
             </div>
           </div>
 

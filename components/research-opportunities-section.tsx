@@ -11,7 +11,7 @@ const researchOpportunities = [
     company: "OPST Laboratory",
     description: "Exciting PhD research opportunity focusing on advanced fiber optic communication systems and signal processing. Work alongside leading researchers on cutting-edge projects with full funding and international collaboration opportunities.",
     tags: ["onsite", "full time", "funded", "PhD"],
-    logo: "/company-placeholder.png",
+    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
     location: "Alexandria, Egypt",
     duration: "3-4 years",
     deadline: "March 15, 2025"
@@ -22,7 +22,7 @@ const researchOpportunities = [
     company: "Alexandria University",
     description: "Master's research position in photovoltaic systems and renewable energy technologies. Opportunity to work on innovative solar cell designs and energy storage solutions with industry partnerships.",
     tags: ["onsite", "full time", "research grant", "Master's"],
-    logo: "/company-placeholder.png",
+    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
     location: "Alexandria, Egypt",
     duration: "2 years",
     deadline: "April 30, 2025"
@@ -33,7 +33,7 @@ const researchOpportunities = [
     company: "CSMNP Center",
     description: "Research assistant opportunity in photonic device development and quantum optics. Gain hands-on experience with state-of-the-art laboratory equipment and contribute to groundbreaking research publications.",
     tags: ["onsite", "part time", "stipend", "Undergraduate"],
-    logo: "/company-placeholder.png",
+    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
     location: "Alexandria, Egypt",
     duration: "1 year",
     deadline: "February 28, 2025"
@@ -44,7 +44,7 @@ const researchOpportunities = [
     company: "International Collaboration",
     description: "Prestigious postdoctoral fellowship in quantum optical systems and quantum communication. Opportunity for international research collaboration and access to world-class facilities.",
     tags: ["onsite", "full time", "fellowship", "Postdoc"],
-    logo: "/company-placeholder.png",
+    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
     location: "Multiple Locations",
     duration: "2-3 years",
     deadline: "January 31, 2025"

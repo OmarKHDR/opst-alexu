@@ -4,17 +4,17 @@ const facilities = [
   {
     id: 1,
     name: "Room 1",
-    image: "/laboratory-facility.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/laboratory-facility.png`
   },
   {
     id: 2,
     name: "Room 1",
-    image: "/laboratory-facility.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/laboratory-facility.png`
   },
   {
     id: 3,
     name: "Room 1",
-    image: "/laboratory-facility.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/laboratory-facility.png`
   }
 ]
 

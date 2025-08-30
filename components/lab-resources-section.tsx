@@ -8,7 +8,7 @@ const resources = [
     title: "Introduction to Optical Communications",
     tags: ["Video Guide", "Beginner", "Communications"],
     description: "Comprehensive introduction to optical communication systems covering fundamental principles, fiber optic technologies, and signal processing techniques. Perfect for students beginning their journey in optical engineering.",
-    image: "/images/research-placeholder.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`,
     duration: "45 minutes",
     level: "Beginner",
     type: "Video Tutorial"
@@ -18,7 +18,7 @@ const resources = [
     title: "Advanced Photonic Device Design",
     tags: ["Video Guide", "Advanced", "Photonics"],
     description: "In-depth exploration of photonic device design principles, fabrication techniques, and performance optimization. Covers cutting-edge research methodologies and practical applications in modern technology.",
-    image: "/images/research-placeholder.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`,
     duration: "60 minutes",
     level: "Advanced",
     type: "Technical Workshop"
@@ -28,7 +28,7 @@ const resources = [
     title: "Solar Cell Efficiency Optimization",
     tags: ["Video Guide", "Intermediate", "Solar Technology"],
     description: "Detailed analysis of solar cell technologies, efficiency improvement techniques, and sustainable energy applications. Includes practical examples and real-world case studies from current research.",
-    image: "/images/research-placeholder.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`,
     duration: "50 minutes",
     level: "Intermediate",
     type: "Research Seminar"
@@ -38,7 +38,7 @@ const resources = [
     title: "Quantum Optics Fundamentals",
     tags: ["Video Guide", "Advanced", "Quantum"],
     description: "Exploration of quantum optical phenomena, quantum communication protocols, and emerging applications in quantum computing. Suitable for advanced students and researchers in the field.",
-    image: "/images/research-placeholder.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`,
     duration: "75 minutes",
     level: "Advanced",
     type: "Lecture Series"
@@ -74,7 +74,7 @@ export default function LabResourcesSection() {
                 {/* Resource Image with Play Button */}
                 <div className="relative h-40 sm:h-48 overflow-hidden">
                   <Image
-                    src={resource.image || "/placeholder.svg"}
+                    src={resource.image || `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder.svg`}
                     alt={resource.title}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"

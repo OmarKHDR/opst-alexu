@@ -6,7 +6,7 @@ export default function EngagementHero() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/university-buildings.png"
+          src={`${process.env.NEXT_PUBLIC_BASE_PATH}/university-buildings.png`}
           alt="University Buildings"
           fill
           className="object-cover"

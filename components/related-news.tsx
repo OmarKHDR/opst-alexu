@@ -7,7 +7,7 @@ const relatedNewsData = [
     title: "OPST Lab Receives International Research Grant",
     date: "02/11/2024",
     excerpt: "Major funding secured for groundbreaking photonics research initiative.",
-    image: "/conference-presentation.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/conference-presentation.png`,
     category: "News"
   },
   {
@@ -15,7 +15,7 @@ const relatedNewsData = [
     title: "Student Team Wins National Innovation Competition",
     date: "05/11/2024",
     excerpt: "Undergraduate researchers recognized for innovative solar technology project.",
-    image: "/students-working-lab.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/students-working-lab.png`,
     category: "Achievement"
   },
   {
@@ -23,7 +23,7 @@ const relatedNewsData = [
     title: "New Partnership with Leading Tech Company",
     date: "08/11/2024",
     excerpt: "Collaboration agreement signed to advance optical communication research.",
-    image: "/technical-consulting-bg.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/technical-consulting-bg.png`,
     category: "Partnership"
   }
 ]

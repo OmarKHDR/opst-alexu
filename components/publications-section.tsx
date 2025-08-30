@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Search, ExternalLink, FileText, Download, Eye, Link, X } from 'lucide-react'
+import NextLink from 'next/link'
+import { Search, ExternalLink, FileText, Download, Eye, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 const categories = [
@@ -24,8 +25,12 @@ const publications = [
     impactFactor: "4.5",
     citations: "31",
     category: "JOURNAL ARTICLES",
-    actions: ["READ", "DOI LINK", "CITE"],
-    color: "border-l-[#FDB813]"
+    color: "border-l-[#FDB813]",
+    actions: {
+      "READ": "/publication/1",
+      "DOI LINK": "https://doi.org/10.1234/example-doi",
+      "CITE": "/publication/1#cite"
+    }
   },
   {
     id: 2,
@@ -37,8 +42,12 @@ const publications = [
     field: "Electrical Engineering",
     defence: "June 2024",
     category: "POSTGRADUATE THESES",
-    actions: ["VIEW THESES", "ABSTRACT", "ATTACHMENTS"],
-    color: "border-l-[#3399FF]"
+    color: "border-l-[#3399FF]",
+    actions: {
+      "VIEW THESES": "/theses/2",
+      "ABSTRACT": "/theses/2#abstract",
+      "ATTACHMENTS": "/theses/2#attachments"
+    }
   },
   {
     id: 3,
@@ -49,8 +58,12 @@ const publications = [
     place: "Paris, France",
     citations: "8",
     category: "CONFERENCE PROCEEDINGS",
-    actions: ["VIEW", "PRESENTATION", "ATTACHMENTS"],
-    color: "border-l-[#003366]"
+    color: "border-l-[#003366]",
+    actions: {
+      "VIEW": "/conference/3",
+      "PRESENTATION": "/conference/3#slides",
+      "ATTACHMENTS": "/conference/3#attachments"
+    }
   },
   {
     id: 4,
@@ -62,8 +75,12 @@ const publications = [
     field: "Electrical Engineering", 
     defence: "June 2024",
     category: "UNDERGRADUATE THESES",
-    actions: ["VIEW THESES", "ABSTRACT", "ATTACHMENTS"],
-    color: "border-l-[#00CC66]"
+    color: "border-l-[#00CC66]",
+    actions: {
+      "VIEW THESES": "/theses/4",
+      "ABSTRACT": "/theses/4#abstract",
+      "ATTACHMENTS": "/theses/4#attachments"
+    }
   },
   {
     id: 5,
@@ -74,8 +91,12 @@ const publications = [
     status: "Granted",
     field: "Communication",
     category: "INTELLECTUAL PROPERTIES",
-    actions: ["DETAILS", "ABSTRACT", "ATTACHMENTS"],
-    color: "border-l-[#9966CC]"
+    color: "border-l-[#9966CC]",
+    actions: {
+      "DETAILS": "/ip/5",
+      "ABSTRACT": "/ip/5#abstract",
+      "ATTACHMENTS": "/ip/5#attachments"
+    }
   }
 ]
 
@@ -119,6 +140,8 @@ export default function PublicationsSection() {
         return <FileText size={16} />
     }
   }
+
+  const isExternalLink = (url: string) => /^https?:\/\//.test(url)
 
   return (
     <section className="bg-white py-16">
@@ -266,17 +289,35 @@ export default function PublicationsSection() {
 
                   {/* Action Buttons */}
                   <div className="flex flex-wrap gap-2 sm:gap-3 mb-3 sm:mb-4">
-                    {publication.actions.map((action, index) => (
-                      <Button
-                        key={index}
-                        variant="outline"
-                        size="sm"
-                        className="font-inter text-xs border-gray-300 hover:bg-white hover:border-[#FDB813] hover:text-[#003366] transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
-                      >
-                        {getActionIcon(action)}
-                        <span className="ml-1">{action}</span>
-                      </Button>
-                    ))}
+                    {Object.entries(publication.actions).map(([action, href], index) => {
+                      const buttonEl = (
+                        <Button
+                          key={index}
+                          variant="outline"
+                          size="sm"
+                          className="font-inter text-xs border-gray-300 hover:bg-white hover:border-[#FDB813] hover:text-[#003366] transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                          disabled={!href}
+                          title={!href ? 'No link available' : undefined}
+                        >
+                          {getActionIcon(action)}
+                          <span className="ml-1">{action}</span>
+                        </Button>
+                      )
+
+                      if (!href) return buttonEl
+
+                      return isExternalLink(href)
+                        ? (
+                            <a key={index} href={href} target="_blank" rel="noopener noreferrer" className="inline-block">
+                              {buttonEl}
+                            </a>
+                          )
+                        : (
+                            <NextLink key={index} href={href} className="inline-block">
+                              {buttonEl}
+                            </NextLink>
+                          )
+                    })}
                   </div>
                 </div>
 

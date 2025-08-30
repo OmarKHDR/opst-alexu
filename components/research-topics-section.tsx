@@ -9,28 +9,28 @@ const researchTopics = [
     id: 1,
     title: "Optical Communications",
     description: "Advanced research in fiber optic systems, high-speed data transmission, and next-generation optical communication networks. Our work focuses on developing innovative solutions for global connectivity challenges.",
-    image: "/images/research-placeholder.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`,
     projects: ["Fiber Optic Networks", "Signal Processing", "Optical Amplifiers"]
   },
   {
     id: 2,
     title: "Photonic Devices", 
     description: "Cutting-edge development of photonic components including lasers, detectors, and integrated optical circuits. Research encompasses both fundamental physics and practical device applications.",
-    image: "/server-network-equipment.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/server-network-equipment.png`,
     projects: ["Laser Systems", "Optical Sensors", "Integrated Photonics"]
   },
   {
     id: 3,
     title: "Solar Technology",
     description: "Innovative research in photovoltaic systems, solar cell efficiency optimization, and sustainable energy solutions. Focus on developing next-generation solar technologies for renewable energy applications.",
-    image: "/images/research-placeholder.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`,
     projects: ["Photovoltaic Cells", "Energy Storage", "Solar Systems"]
   },
   {
     id: 4,
     title: "Quantum Optics",
     description: "Fundamental research in quantum optical phenomena and their applications in quantum computing, cryptography, and advanced sensing systems. Exploring the quantum nature of light and matter interactions.",
-    image: "/images/research-placeholder.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`,
     projects: ["Quantum Computing", "Quantum Sensors", "Quantum Cryptography"]
   }
 ]
@@ -79,7 +79,7 @@ export default function ResearchTopicsSection({ onScrollToProjects }: ResearchTo
               {/* Topic Image */}
               <div className="relative h-40 sm:h-48 overflow-hidden">
                 <Image
-                  src={topic.image || "/placeholder.svg"}
+                  src={topic.image || `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder.svg`}
                   alt={topic.title}
                   fill
                   className="object-cover transition-transform duration-300 hover:scale-105"

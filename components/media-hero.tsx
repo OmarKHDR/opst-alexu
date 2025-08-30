@@ -9,19 +9,19 @@ const featuredItems = [
     id: 1,
     title: "Upcoming conference at K university",
     content: "Aliquam tempor eros at felis tincidunt, at vehicula massa blandit. Vestibulum interdum mauris vel interdum ullamcorper. Proin vel nulla tincidunt, ornare lacus at, sodales leo. Aenean ut augue gravida, efficitur orci et, mattis ex. Mauris convallis tortor vel libero varius hendrerit.",
-    image: "/conference-hall-gathering.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/conference-hall-gathering.png`
   },
   {
     id: 2,
     title: "Research symposium highlights",
     content: "Join us for an exciting research symposium featuring the latest developments in optics and photonics. Leading researchers will present their groundbreaking work and discuss future directions in the field.",
-    image: "/placeholder-1d0ey.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder-1d0ey.png`
   },
   {
     id: 3,
     title: "International collaboration meeting",
     content: "Exploring new partnerships and collaborative opportunities with international research institutions to advance our work in solar technologies and sustainable energy solutions.",
-    image: "/placeholder-8qc23.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder-8qc23.png`
   }
 ]
 
@@ -74,7 +74,7 @@ export default function MediaHero() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src={featuredItems[currentSlide].image || "/placeholder.svg"}
+          src={featuredItems[currentSlide].image || `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder.svg`}
           alt={featuredItems[currentSlide].title}
           fill
           className="object-cover"

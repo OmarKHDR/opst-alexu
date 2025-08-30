@@ -30,7 +30,7 @@ const articlesData = [
       
       <p>The research team continues to refine the technology with plans for field trials beginning next quarter. Collaboration with industry partners will be crucial for bringing this innovation to market.</p>
     `,
-    image: "/laboratory-research-equipment.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/laboratory-research-equipment.png`,
     tags: ["Optics", "Communication", "Research", "Innovation"]
   },
   {
@@ -55,7 +55,7 @@ const articlesData = [
       
       <p>Commercial applications are expected within the next two years, with several industry partners expressing strong interest in licensing the technology for mass production.</p>
     `,
-    image: "/laboratory-research-equipment.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/laboratory-research-equipment.png`,
     tags: ["Solar", "Photovoltaic", "Efficiency", "Renewable Energy"]
   },
   {
@@ -80,7 +80,7 @@ const articlesData = [
       
       <p>This international network positions the OPST Laboratory at the forefront of global photonics research, ensuring continued innovation and scientific advancement in our field.</p>
     `,
-    image: "/laboratory-research-equipment.png",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/laboratory-research-equipment.png`,
     tags: ["Collaboration", "International", "Photonics", "Partnership"]
   }
 ]

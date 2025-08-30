@@ -6,13 +6,13 @@ const services = [
     id: 1,
     title: "Technical Consulting",
     description: "Expert technical consulting services providing specialized knowledge in optical systems, photonic applications, and advanced engineering solutions. Our experienced team offers comprehensive support for industry and academic challenges.",
-    image: "/technical-consulting-bg.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/technical-consulting-bg.png`
   },
   {
     id: 2,
     title: "Research Partnership",
     description: "Collaborative research partnerships with industry leaders, government agencies, and international institutions. We provide access to cutting-edge facilities, expertise, and innovative solutions for complex engineering challenges and research endeavors.",
-    image: "/research-partnership-bg.png"
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/research-partnership-bg.png`
   }
 ]
 
@@ -37,7 +37,7 @@ export default function IndustryServicesSection() {
               {/* Background Image */}
               <div className="absolute inset-0">
                 <Image
-                  src={service.image || "/placeholder.svg"}
+                  src={service.image || `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder.svg`}
                   alt={service.title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"

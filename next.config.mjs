@@ -1,9 +1,10 @@
 const isExport = process.env.NEXT_EXPORT === 'true';
+const isGitHubPages = process.env.NEXT_PUBLIC_GITHUB_PAGES === 'true';
 
 const nextConfig = {
   output: 'export',
-  basePath: isExport ? '' : '/opst-alexu',
-    assetPrefix: isExport ? '' : '/opst-alexu',
+  basePath: isExport ? isGitHubPages ? '/opst-alexu' : '' : '',
+  assetPrefix: isExport ? isGitHubPages ? '/opst-alexu' : '' : '',
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -14,7 +15,7 @@ const nextConfig = {
     unoptimized: true,
   },
   env: {
-    NEXT_PUBLIC_BASE_PATH: isExport ? '' : '/opst-alexu'
+    NEXT_PUBLIC_BASE_PATH: isExport ? isGitHubPages ? '/opst-alexu' : '' : ''
   },
 };
 
