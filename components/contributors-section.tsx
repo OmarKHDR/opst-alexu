@@ -3,50 +3,45 @@
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight, FileText, Linkedin, Globe, Mail } from 'lucide-react'
-
-const contributors = [
-  {
-    id: 1,
-    name: "Prof. Lorem epsum",
-    tags: ["Topic A", "Topic B", "Topic C"],
-    affiliation: "Affiliated with Alexandria university",
-    description: "Aliquam tempor eros at felis tincidunt, at vehicula massa blandit. Vestibulum interdum mauris vel interdum ullamcorper.",
-    image: "/professional-headshot.png",
-    cv: "#",
-    linkedin: "#",
-    orcid: "#",
-    email: "professor@example.com"
-  },
-  {
-    id: 2,
-    name: "Dr. Jane Smith",
-    tags: ["Photonics", "Research", "Innovation"],
-    affiliation: "Affiliated with Alexandria university",
-    description: "Leading researcher in optical communications and photonic systems with over 15 years of experience in the field.",
-    image: "/professional-headshot.png",
-    cv: "#",
-    linkedin: "#",
-    orcid: "#",
-    email: "jane.smith@example.com"
-  },
-  {
-    id: 3,
-    name: "Prof. Ahmed Hassan",
-    tags: ["Solar Tech", "Energy", "Sustainability"],
-    affiliation: "Affiliated with Alexandria university",
-    description: "Expert in solar technology and sustainable energy solutions, contributing to breakthrough research in renewable energy.",
-    image: "/professional-headshot.png",
-    cv: "#",
-    linkedin: "#",
-    orcid: "#",
-    email: "ahmed.hassan@example.com"
-  }
-]
+import { getBestContributors } from '@/lib/best-contributors'
+import type { Contributor } from '@/lib/best-contributors'
 
 export default function ContributorsSection() {
+  const [contributors, setContributors] = useState<Contributor[]>([])
+  const [loading, setLoading] = useState(true)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoScrolling, setIsAutoScrolling] = useState(true)
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Data fetching effect
+  useEffect(() => {
+    const fetchContributors = async () => {
+      try {
+        const data = await getBestContributors()
+        setContributors(data)
+      } catch (error) {
+        console.error('Failed to fetch contributors:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchContributors()
+  }, [])
+
+  // Auto-scroll effect
+  useEffect(() => {
+    if (!loading && contributors.length > 0 && isAutoScrolling) {
+      autoScrollRef.current = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % contributors.length)
+      }, 8000)
+    }
+
+    return () => {
+      if (autoScrollRef.current) {
+        clearInterval(autoScrollRef.current)
+      }
+    }
+  }, [isAutoScrolling, contributors.length, loading])
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % contributors.length)
@@ -60,24 +55,6 @@ export default function ContributorsSection() {
     setTimeout(() => setIsAutoScrolling(true), 15000) // Resume after 15 seconds
   }
 
-  const currentContributor = contributors[currentSlide]
-
-  // Auto-scroll functionality
-  useEffect(() => {
-    if (isAutoScrolling) {
-      autoScrollRef.current = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % contributors.length)
-      }, 8000) // Change slide every 8 seconds
-    }
-
-    return () => {
-      if (autoScrollRef.current) {
-        clearInterval(autoScrollRef.current)
-      }
-    }
-  }, [isAutoScrolling, contributors.length])
-
-  // Pause auto-scroll on hover
   const handleMouseEnter = () => {
     setIsAutoScrolling(false)
     if (autoScrollRef.current) {
@@ -87,6 +64,32 @@ export default function ContributorsSection() {
 
   const handleMouseLeave = () => {
     setIsAutoScrolling(true)
+  }
+
+  const currentContributor = contributors[currentSlide]
+
+  if (loading) {
+    return (
+      <section className="bg-[#F8F8F8] py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <p className="font-inter text-[#555555]">Loading contributors...</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (contributors.length === 0) {
+    return (
+      <section className="bg-[#F8F8F8] py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <p className="font-inter text-[#555555]">No contributors found.</p>
+          </div>
+        </div>
+      </section>
+    )
   }
 
   return (
@@ -127,8 +130,8 @@ export default function ContributorsSection() {
               {/* Profile Image */}
               <div className="w-full sm:w-64 h-48 sm:h-64 md:h-80 flex-shrink-0 overflow-hidden rounded-xl sm:rounded-2xl shadow-lg">
                 <Image
-                  src={currentContributor.image || "/placeholder.svg"}
-                  alt={`${currentContributor.name} profile photo`}
+                  src={currentContributor.person.image || "/placeholder.svg"}
+                  alt={`${currentContributor.person.name} profile photo`}
                   width={256}
                   height={320}
                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
@@ -138,60 +141,60 @@ export default function ContributorsSection() {
               {/* Content */}
               <div className="flex-1 text-center lg:text-left">
                 <h3 className="font-merriweather text-2xl sm:text-3xl font-bold text-[#1A1A1A] mb-3 sm:mb-4">
-                  {currentContributor.name}
+                  {currentContributor.person.name}
                 </h3>
                 
-                {/* Tags */}
+                {/* Research Interests */}
                 <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4 justify-center lg:justify-start">
-                  {currentContributor.tags.map((tag, index) => (
+                  {currentContributor.person.researchInterests.map((interest, index) => (
                     <span
                       key={index}
                       className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#FDB813]/10 text-[#003366] rounded-full text-xs sm:text-sm font-inter font-medium border border-[#FDB813]/20 shadow-sm hover:shadow-md transition-shadow"
                     >
-                      {tag}
+                      {interest}
                     </span>
                   ))}
                 </div>
 
                 <p className="font-inter text-sm sm:text-base text-[#555555] mb-3 sm:mb-4 font-medium">
-                  {currentContributor.affiliation}
+                  {currentContributor.person.affiliation}
                 </p>
 
                 <p className="font-inter text-sm sm:text-base text-[#555555] leading-relaxed mb-6 sm:mb-8 line-clamp-4 sm:line-clamp-none">
-                  {currentContributor.description}
+                  {currentContributor.person.description}
                 </p>
 
                 {/* Social Links */}
                 <div className="flex gap-2 sm:gap-3 justify-center lg:justify-start">
                   <a
-                    href={currentContributor.cv}
+                    href={currentContributor.person.cvLink}
                     className="p-2 sm:p-3 border border-gray-300 rounded-xl sm:rounded-2xl hover:bg-[#F8F8F8] hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group shadow-sm hover:shadow-lg transform hover:-translate-y-1"
                     title="Download CV"
-                    aria-label={`Download ${currentContributor.name}'s CV`}
+                    aria-label={`Download ${currentContributor.person.name}'s CV`}
                   >
                     <FileText size={16} className="sm:w-5 sm:h-5 text-[#555555] group-hover:text-[#003366] transition-colors" />
                   </a>
                   <a
-                    href={currentContributor.linkedin}
+                    href={currentContributor.person.linkedin}
                     className="p-2 sm:p-3 border border-gray-300 rounded-xl sm:rounded-2xl hover:bg-[#F8F8F8] hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group shadow-sm hover:shadow-lg transform hover:-translate-y-1"
                     title="LinkedIn Profile"
-                    aria-label={`Visit ${currentContributor.name}'s LinkedIn profile`}
+                    aria-label={`Visit ${currentContributor.person.name}'s LinkedIn profile`}
                   >
                     <Linkedin size={16} className="sm:w-5 sm:h-5 text-[#555555] group-hover:text-[#003366] transition-colors" />
                   </a>
                   <a
-                    href={currentContributor.orcid}
+                    href={currentContributor.person.orcid}
                     className="p-2 sm:p-3 border border-gray-300 rounded-xl sm:rounded-2xl hover:bg-[#F8F8F8] hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group shadow-sm hover:shadow-lg transform hover:-translate-y-1"
                     title="ORCID Profile"
-                    aria-label={`Visit ${currentContributor.name}'s ORCID profile`}
+                    aria-label={`Visit ${currentContributor.person.name}'s ORCID profile`}
                   >
                     <Globe size={16} className="sm:w-5 sm:h-5 text-[#555555] group-hover:text-[#003366] transition-colors" />
                   </a>
                   <a
-                    href={`mailto:${currentContributor.email}`}
+                    href={`mailto:${currentContributor.person.email}`}
                     className="p-2 sm:p-3 border border-gray-300 rounded-xl sm:rounded-2xl hover:bg-[#F8F8F8] hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group shadow-sm hover:shadow-lg transform hover:-translate-y-1"
                     title="Send Email"
-                    aria-label={`Send email to ${currentContributor.name}`}
+                    aria-label={`Send email to ${currentContributor.person.name}`}
                   >
                     <Mail size={16} className="sm:w-5 sm:h-5 text-[#555555] group-hover:text-[#003366] transition-colors" />
                   </a>

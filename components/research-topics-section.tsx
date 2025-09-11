@@ -1,46 +1,30 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
+import { getResearchTopics } from '@/lib/research-topics'
+import type { ResearchTopic } from '@/lib/research-topics'
 
-const researchTopics = [
-  {
-    id: 1,
-    title: "Optical Communications",
-    description: "Advanced research in fiber optic systems, high-speed data transmission, and next-generation optical communication networks. Our work focuses on developing innovative solutions for global connectivity challenges.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`,
-    projects: ["Fiber Optic Networks", "Signal Processing", "Optical Amplifiers"]
-  },
-  {
-    id: 2,
-    title: "Photonic Devices", 
-    description: "Cutting-edge development of photonic components including lasers, detectors, and integrated optical circuits. Research encompasses both fundamental physics and practical device applications.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/server-network-equipment.png`,
-    projects: ["Laser Systems", "Optical Sensors", "Integrated Photonics"]
-  },
-  {
-    id: 3,
-    title: "Solar Technology",
-    description: "Innovative research in photovoltaic systems, solar cell efficiency optimization, and sustainable energy solutions. Focus on developing next-generation solar technologies for renewable energy applications.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`,
-    projects: ["Photovoltaic Cells", "Energy Storage", "Solar Systems"]
-  },
-  {
-    id: 4,
-    title: "Quantum Optics",
-    description: "Fundamental research in quantum optical phenomena and their applications in quantum computing, cryptography, and advanced sensing systems. Exploring the quantum nature of light and matter interactions.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`,
-    projects: ["Quantum Computing", "Quantum Sensors", "Quantum Cryptography"]
-  }
-]
+export default function ResearchTopicsSection({ onScrollToProjects }: { onScrollToProjects?: (topicId: string) => void }) {
+  const [researchTopics, setResearchTopics] = useState<ResearchTopic[]>([])
+  const [loading, setLoading] = useState(true)
 
-interface ResearchTopicsSectionProps {
-  onScrollToProjects?: (topicId: number) => void
-}
+  useEffect(() => {
+    const fetchResearchTopics = async () => {
+      try {
+        const data = await getResearchTopics()
+        setResearchTopics(data)
+      } catch (error) {
+        console.error('Failed to fetch research topics:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-export default function ResearchTopicsSection({ onScrollToProjects }: ResearchTopicsSectionProps) {
-  const handleScrollToProjects = (topicId: number) => {
+    fetchResearchTopics()
+  }, [])
+  const handleScrollToProjects = (topicId: string) => {
     if (onScrollToProjects) {
       onScrollToProjects(topicId)
     }
@@ -71,7 +55,15 @@ export default function ResearchTopicsSection({ onScrollToProjects }: ResearchTo
 
         {/* Topics Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto">
-          {researchTopics.map((topic) => (
+          {loading ? (
+            <div className="col-span-2 text-center py-12">
+              <p className="font-inter text-[#555555]">Loading research topics...</p>
+            </div>
+          ) : researchTopics.length === 0 ? (
+            <div className="col-span-2 text-center py-12">
+              <p className="font-inter text-[#555555]">No research topics found.</p>
+            </div>
+          ) : researchTopics.map((topic) => (
             <div 
               key={topic.id} 
               className="bg-[#F8F8F8] rounded-xl sm:rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
@@ -79,7 +71,7 @@ export default function ResearchTopicsSection({ onScrollToProjects }: ResearchTo
               {/* Topic Image */}
               <div className="relative h-40 sm:h-48 overflow-hidden">
                 <Image
-                  src={topic.image || `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder.svg`}
+                  src= {topic.image? `${topic.image}` : `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder.svg`}
                   alt={topic.title}
                   fill
                   className="object-cover transition-transform duration-300 hover:scale-105"
@@ -104,12 +96,12 @@ export default function ResearchTopicsSection({ onScrollToProjects }: ResearchTo
                     Key Research Areas:
                   </h4>
                   <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                    {topic.projects.map((project, index) => (
+                    {topic.projectsTags.map((tag, index) => (
                       <span
                         key={index}
                         className="px-2 sm:px-3 py-1 bg-white text-[#555555] rounded-full text-xs sm:text-sm font-inter border border-gray-200 shadow-sm"
                       >
-                        {project}
+                        {tag}
                       </span>
                     ))}
                   </div>

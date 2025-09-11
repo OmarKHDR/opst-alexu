@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Search, Filter, FileText, Linkedin, Globe, Mail, X } from 'lucide-react'
+import { getPeople } from '@/lib/people'
+import type { Person } from '@/lib/people'
 
 const academicCategories = [
   'All',
@@ -15,100 +17,24 @@ const academicCategories = [
   'Alumni'
 ]
 
-const people = [
-  {
-    id: 1,
-    name: "Prof. Ahmed Hassan",
-    title: "Professor",
-    degree: "PhD in Optical Engineering",
-    tags: ["Optical Communications", "Fiber Optics", "Signal Processing"],
-    affiliation: "Affiliated with Alexandria University",
-    description: "Leading expert in optical communication systems with over 20 years of research experience. Specializes in advanced fiber optic technologies and high-speed data transmission systems.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/professional-headshot.png`,
-    category: "Professor",
-    cv: "#",
-    linkedin: "#",
-    orcid: "#",
-    email: "ahmed.hassan@alexu.edu.eg"
-  },
-  {
-    id: 2,
-    name: "Dr. Sarah Johnson",
-    title: "Associate Professor",
-    degree: "PhD in Photonics",
-    tags: ["Photonic Devices", "Laser Systems", "Quantum Optics"],
-    affiliation: "Affiliated with Alexandria University",
-    description: "Renowned researcher in photonic device development and quantum optical systems. Her work focuses on next-generation laser technologies and their applications.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/professional-headshot.png`,
-    category: "Associate Professor",
-    cv: "#",
-    linkedin: "#",
-    orcid: "#",
-    email: "sarah.johnson@alexu.edu.eg"
-  },
-  {
-    id: 3,
-    name: "Dr. Michael Chen",
-    title: "Assistant Professor",
-    degree: "PhD in Solar Technology",
-    tags: ["Solar Cells", "Renewable Energy", "Materials Science"],
-    affiliation: "Affiliated with Alexandria University",
-    description: "Specialist in solar technology and renewable energy systems. Research focuses on improving photovoltaic efficiency and developing sustainable energy solutions.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/professional-headshot.png`,
-    category: "Assistant Professor",
-    cv: "#",
-    linkedin: "#",
-    orcid: "#",
-    email: "michael.chen@alexu.edu.eg"
-  },
-  {
-    id: 4,
-    name: "Aya Mohamed",
-    title: "PhD Student",
-    degree: "MSc in Electrical Engineering",
-    tags: ["Machine Learning", "Optical Networks", "AI Applications"],
-    affiliation: "Affiliated with Alexandria University",
-    description: "PhD candidate researching machine learning applications in optical communication networks. Working on AI-driven optimization of fiber optic systems.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/professional-headshot.png`,
-    category: "PhD Student",
-    cv: "#",
-    linkedin: "#",
-    orcid: "#",
-    email: "aya.mohamed@alexu.edu.eg"
-  },
-  {
-    id: 5,
-    name: "Omar Khalil",
-    title: "Master Student",
-    degree: "BSc in Electronics Engineering",
-    tags: ["Photonic Crystals", "Optical Sensors", "Device Fabrication"],
-    affiliation: "Affiliated with Alexandria University",
-    description: "Master's student focusing on photonic crystal structures and their applications in optical sensing. Research involves novel device fabrication techniques.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/professional-headshot.png`,
-    category: "Master Student",
-    cv: "#",
-    linkedin: "#",
-    orcid: "#",
-    email: "omar.khalil@alexu.edu.eg"
-  },
-  {
-    id: 6,
-    name: "Fatma Ali",
-    title: "Research Assistant",
-    degree: "BSc in Physics",
-    tags: ["Laboratory Management", "Equipment Maintenance", "Data Analysis"],
-    affiliation: "Affiliated with Alexandria University",
-    description: "Research assistant supporting laboratory operations and experimental research. Specializes in equipment maintenance and data analysis for optical experiments.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/professional-headshot.png`,
-    category: "Research Assistant",
-    cv: "#",
-    linkedin: "#",
-    orcid: "#",
-    email: "fatma.ali@alexu.edu.eg"
-  }
-]
-
 export default function PeopleSection() {
+  const [people, setPeople] = useState<Person[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchPeople = async () => {
+      try {
+        const data = await getPeople()
+        setPeople(data)
+      } catch (error) {
+        console.error('Failed to fetch people:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPeople()
+  }, [])
   const [activeCategory, setActiveCategory] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
@@ -117,10 +43,10 @@ export default function PeopleSection() {
 
   // Filter people based on category and search
   const filteredPeople = people.filter(person => {
-    const matchesCategory = activeCategory === 'All' || person.category === activeCategory
+    const matchesCategory = activeCategory === 'All' || person.academicCategory === activeCategory
     const matchesSearch = person.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          person.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         person.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                         person.researchInterests.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
                          person.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          person.degree.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesSearch
@@ -261,13 +187,13 @@ export default function PeopleSection() {
             >
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                 {/* Profile Image */}
-                <div className="w-full sm:w-1/3 h-48 sm:h-auto overflow-hidden rounded-lg sm:rounded-xl">
+                <div className="w-full sm:w-40 h-48 sm:h-48 overflow-hidden rounded-lg sm:rounded-xl">
                   <Image
                     src={person.image || `${process.env.NEXT_PUBLIC_BASE_PATH}/placeholder.svg`}
                     alt={`${person.name} profile photo`}
-                    width={300}
+                    width={160}
                     height={192}
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                    className="w-full h-full object-cover object-top transition-transform duration-300 hover:scale-105"
                   />
                 </div>
 
@@ -286,20 +212,20 @@ export default function PeopleSection() {
                     </p>
                   </div>
 
-                  {/* Tags */}
+                  {/* Research Interests */}
                   <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-2 sm:mb-3">
-                    {person.tags.map((tag, index) => (
+                    {person.researchInterests.map((interest, index) => (
                       <span
                         key={index}
                         className="px-2 sm:px-3 py-1 bg-white text-[#555555] rounded-full text-xs sm:text-sm font-inter border border-gray-200 shadow-sm"
                       >
-                        {tag}
+                        {interest}
                       </span>
                     ))}
                   </div>
 
                   <p className="font-inter text-[#555555] mb-2 sm:mb-3 font-medium text-xs sm:text-sm">
-                    {person.affiliation}
+                    Affiliated with {person.affiliation}
                   </p>
 
                   <p className="font-inter text-[#555555] leading-relaxed mb-4 sm:mb-6 text-xs sm:text-sm line-clamp-3 sm:line-clamp-none">
@@ -309,7 +235,7 @@ export default function PeopleSection() {
                   {/* Social Links */}
                   <div className="flex gap-2 sm:gap-3 mt-auto">
                     <a
-                      href={person.cv}
+                      href={person.cvLink}
                       className="p-1.5 sm:p-2 border border-gray-300 rounded-lg hover:bg-white hover:border-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 group"
                       title="Download CV"
                       aria-label={`Download ${person.name}'s CV`}

@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import NextLink from 'next/link'
 import { Search, ExternalLink, FileText, Download, Eye, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { getPublications } from '@/lib/publications'
 
 const categories = [
   'ALL PUBLICATIONS',
@@ -14,96 +15,86 @@ const categories = [
   'INTELLECTUAL PROPERTIES'
 ]
 
-const publications = [
-  {
-    id: 1,
-    type: "JOURNAL ARTICLE",
-    title: "Novel Approaches to Optical Communication Systems",
-    authors: "Ahmed M. Hassan, Sarah L. Johnson, John D. Smith",
-    journal: "Journal of Lightwave Technology",
-    year: "2025",
-    impactFactor: "4.5",
-    citations: "31",
-    category: "JOURNAL ARTICLES",
-    color: "border-l-[#FDB813]",
-    actions: {
-      "READ": "/publication/1",
-      "DOI LINK": "https://doi.org/10.1234/example-doi",
-      "CITE": "/publication/1#cite"
-    }
-  },
-  {
-    id: 2,
-    type: "POSTGRADUATE THESES",
-    title: "Machine Learning Applications in Wireless Sensor Networks",
-    authors: "PhD Thesis - Aya Hassan Mohamed",
-    supervisor: "Supervised by: Prof. Ahmed Khalil, Dr. Sarah Ibrahim",
-    year: "2024",
-    field: "Electrical Engineering",
-    defence: "June 2024",
-    category: "POSTGRADUATE THESES",
-    color: "border-l-[#3399FF]",
-    actions: {
-      "VIEW THESES": "/theses/2",
-      "ABSTRACT": "/theses/2#abstract",
-      "ATTACHMENTS": "/theses/2#attachments"
-    }
-  },
-  {
-    id: 3,
-    type: "CONFERENCE PROCEEDING",
-    title: "Blockchain Integration in IoT Security Frameworks",
-    authors: "Hassan A. Mohamed, Amira S. Ahmed Ghanem",
-    year: "2025",
-    place: "Paris, France",
-    citations: "8",
-    category: "CONFERENCE PROCEEDINGS",
-    color: "border-l-[#003366]",
-    actions: {
-      "VIEW": "/conference/3",
-      "PRESENTATION": "/conference/3#slides",
-      "ATTACHMENTS": "/conference/3#attachments"
-    }
-  },
-  {
-    id: 4,
-    type: "UNDERGRADUATE THESES",
-    title: "Smart Home Automation System Using IoT Technologies",
-    authors: "Bachelor's Thesis - Yasmin Mohamed Ali",
-    supervisor: "Supervised by: Dr. Ahmed Hassan, Eng. Mahmoud Farouk",
-    year: "2022",
-    field: "Electrical Engineering", 
-    defence: "June 2024",
-    category: "UNDERGRADUATE THESES",
-    color: "border-l-[#00CC66]",
-    actions: {
-      "VIEW THESES": "/theses/4",
-      "ABSTRACT": "/theses/4#abstract",
-      "ATTACHMENTS": "/theses/4#attachments"
-    }
-  },
-  {
-    id: 5,
-    type: "INTELLECTUAL PROPERTY",
-    title: "Adaptive Antenna Array System for 6G Communications",
-    authors: "Inventors: Ahmed M. Hassan, Fatma A. Ahmed, Amira S. Ahmed",
-    year: "2023",
-    status: "Granted",
-    field: "Communication",
-    category: "INTELLECTUAL PROPERTIES",
-    color: "border-l-[#9966CC]",
-    actions: {
-      "DETAILS": "/ip/5",
-      "ABSTRACT": "/ip/5#abstract",
-      "ATTACHMENTS": "/ip/5#attachments"
-    }
+interface Publication {
+  id: string;
+  type: string;
+  title: string;
+  authors: string;
+  year: string;
+  journalName?: string;
+  impactFactor?: string;
+  citations?: string;
+  place?: string;
+  supervisor?: string;
+  field?: string;
+  defenceDate?: string;
+  status?: string;
+  category?: string;
+  color?: string;
+  readURL?: string;
+  doiUrl?: string;
+  citeUrl?: string;
+  view_Theses_Url?: string;
+  abstractUrl?: string;
+  attachmentUrl?: string;
+  presentationUrl?: string;
+  detailsUrl?: string;
+}
+
+const getPublicationColor = (type: string) => {
+  switch (type) {
+    case 'JOURNAL ARTICLES':
+      return 'border-l-[#FDB813]'
+    case 'CONFERENCE PROCEEDINGS':
+      return 'border-l-[#003366]'
+    case 'POSTGRADUATE THESES':
+      return 'border-l-[#3399FF]'
+    case 'UNDERGRADUATE THESES':
+      return 'border-l-[#00CC66]'
+    case 'INTELLECTUAL PROPERTIES':
+      return 'border-l-[#9966CC]'
+    default:
+      return 'border-l-[#FDB813]'
   }
-]
+}
+
+const getPublicationCategory = (type: string) => {
+  return type || 'ALL PUBLICATIONS'
+}
+
+const mapContentfulToPublication = (pub: Publication): Publication => {
+  const category = getPublicationCategory(pub.type)
+  const color = getPublicationColor(pub.type)
+  
+  return {
+    ...pub,
+    category,
+    color,
+  }
+}
 
 export default function PublicationsSection() {
+  const [publications, setPublications] = useState<Publication[]>([])
+  const [loading, setLoading] = useState(true)
   const [activeCategory, setActiveCategory] = useState('ALL PUBLICATIONS')
   const [searchQuery, setSearchQuery] = useState('')
   const [showFilters, setShowFilters] = useState(false)
+
+  useEffect(() => {
+    const fetchPublications = async () => {
+      try {
+        const data = await getPublications()
+        const transformedData = data.map(mapContentfulToPublication)
+        setPublications(transformedData)
+      } catch (error) {
+        console.error('Failed to fetch publications:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPublications()
+  }, [])
 
   // Filter publications based on category and search
   const filteredPublications = publications.filter(publication => {
@@ -146,26 +137,7 @@ export default function PublicationsSection() {
   return (
     <section className="bg-white py-16">
       <div className="container mx-auto px-4">
-        {/* Category Filters - Desktop */}
-        <div className="hidden md:flex justify-center mb-8">
-          <div className="flex flex-wrap gap-2 bg-[#F8F8F8] p-3 rounded-2xl shadow-lg border border-gray-100">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => handleCategoryChange(category)}
-                className={`px-4 py-2 rounded-xl font-inter text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 ${
-                  activeCategory === category
-                    ? 'bg-white text-[#003366] shadow-md border border-[#FDB813]/20'
-                    : 'text-[#555555] hover:text-[#003366] hover:bg-white/50'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Search Bar and Mobile Filter */}
+        {/* Search Bar and Filter Button */}
         <div className="max-w-2xl mx-auto mb-12">
           <div className="flex gap-4">
             <div className="flex-1 relative">
@@ -179,11 +151,13 @@ export default function PublicationsSection() {
               <Search size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#555555]" />
             </div>
             
-            {/* Mobile Filter Button */}
-            <div className="relative md:hidden">
+            {/* Filter Button */}
+            <div className="relative">
               <button 
                 onClick={() => setShowFilters(!showFilters)}
-                className="px-4 py-3 border border-gray-300 rounded-2xl hover:bg-[#F8F8F8] hover:border-[#FDB813] transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2"
+                className={`px-4 py-3 border border-gray-300 rounded-2xl hover:bg-[#F8F8F8] transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 ${
+                  showFilters ? 'border-[#FDB813] bg-[#F8F8F8]' : 'hover:border-[#FDB813]'
+                }`}
                 aria-label="Filter options"
               >
                 <svg className="w-5 h-5 text-[#555555]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -281,43 +255,118 @@ export default function PublicationsSection() {
                     </p>
                   )}
                   
-                  {publication.journal && (
+                  {publication.journalName && (
                     <p className="font-inter text-xs sm:text-sm text-[#555555] mb-3 sm:mb-4 font-medium">
-                      {publication.journal}
+                      {publication.journalName}
                     </p>
                   )}
 
                   {/* Action Buttons */}
                   <div className="flex flex-wrap gap-2 sm:gap-3 mb-3 sm:mb-4">
-                    {Object.entries(publication.actions).map(([action, href], index) => {
-                      const buttonEl = (
-                        <Button
-                          key={index}
-                          variant="outline"
-                          size="sm"
-                          className="font-inter text-xs border-gray-300 hover:bg-white hover:border-[#FDB813] hover:text-[#003366] transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
-                          disabled={!href}
-                          title={!href ? 'No link available' : undefined}
-                        >
-                          {getActionIcon(action)}
-                          <span className="ml-1">{action}</span>
-                        </Button>
-                      )
-
-                      if (!href) return buttonEl
-
-                      return isExternalLink(href)
-                        ? (
-                            <a key={index} href={href} target="_blank" rel="noopener noreferrer" className="inline-block">
-                              {buttonEl}
-                            </a>
-                          )
-                        : (
-                            <NextLink key={index} href={href} className="inline-block">
-                              {buttonEl}
-                            </NextLink>
-                          )
-                    })}
+                    {publication.readURL && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="font-inter text-xs border-gray-300 hover:bg-white hover:border-[#FDB813] hover:text-[#003366] transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                        asChild
+                      >
+                        <a href={publication.readURL} target="_blank" rel="noopener noreferrer">
+                          <Eye size={16} />
+                          <span className="ml-1">READ</span>
+                        </a>
+                      </Button>
+                    )}
+                    {publication.doiUrl && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="font-inter text-xs border-gray-300 hover:bg-white hover:border-[#FDB813] hover:text-[#003366] transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                        asChild
+                      >
+                        <a href={publication.doiUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink size={16} />
+                          <span className="ml-1">DOI LINK</span>
+                        </a>
+                      </Button>
+                    )}
+                    {publication.citeUrl && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="font-inter text-xs border-gray-300 hover:bg-white hover:border-[#FDB813] hover:text-[#003366] transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                        asChild
+                      >
+                        <a href={publication.citeUrl} target="_blank" rel="noopener noreferrer">
+                          <FileText size={16} />
+                          <span className="ml-1">CITE</span>
+                        </a>
+                      </Button>
+                    )}
+                    {publication.view_Theses_Url && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="font-inter text-xs border-gray-300 hover:bg-white hover:border-[#FDB813] hover:text-[#003366] transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                        asChild
+                      >
+                        <a href={publication.view_Theses_Url} target="_blank" rel="noopener noreferrer">
+                          <Eye size={16} />
+                          <span className="ml-1">VIEW THESES</span>
+                        </a>
+                      </Button>
+                    )}
+                    {publication.abstractUrl && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="font-inter text-xs border-gray-300 hover:bg-white hover:border-[#FDB813] hover:text-[#003366] transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                        asChild
+                      >
+                        <a href={publication.abstractUrl} target="_blank" rel="noopener noreferrer">
+                          <FileText size={16} />
+                          <span className="ml-1">ABSTRACT</span>
+                        </a>
+                      </Button>
+                    )}
+                    {publication.attachmentUrl && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="font-inter text-xs border-gray-300 hover:bg-white hover:border-[#FDB813] hover:text-[#003366] transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                        asChild
+                      >
+                        <a href={publication.attachmentUrl} target="_blank" rel="noopener noreferrer">
+                          <Download size={16} />
+                          <span className="ml-1">ATTACHMENTS</span>
+                        </a>
+                      </Button>
+                    )}
+                    {publication.presentationUrl && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="font-inter text-xs border-gray-300 hover:bg-white hover:border-[#FDB813] hover:text-[#003366] transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                        asChild
+                      >
+                        <a href={publication.presentationUrl} target="_blank" rel="noopener noreferrer">
+                          <FileText size={16} />
+                          <span className="ml-1">PRESENTATION</span>
+                        </a>
+                      </Button>
+                    )}
+                    {publication.detailsUrl && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="font-inter text-xs border-gray-300 hover:bg-white hover:border-[#FDB813] hover:text-[#003366] transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                        asChild
+                      >
+                        <a href={publication.detailsUrl} target="_blank" rel="noopener noreferrer">
+                          <Eye size={16} />
+                          <span className="ml-1">DETAILS</span>
+                        </a>
+                      </Button>
+                    )}
                   </div>
                 </div>
 
@@ -342,10 +391,10 @@ export default function PublicationsSection() {
                     <div>
                       <div className="font-inter text-xs opacity-75 mb-1">
                         {publication.citations ? 'CITATIONS' : 
-                         publication.defence ? 'DEFENCE' : 'INFO'}
+                         publication.defenceDate ? 'DEFENCE' : 'INFO'}
                       </div>
                       <div className="font-inter text-xs sm:text-sm font-medium">
-                        {publication.citations || publication.defence || '-'}
+                        {publication.citations || publication.defenceDate || '-'}
                       </div>
                     </div>
                   </div>

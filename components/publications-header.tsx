@@ -1,12 +1,36 @@
-const statistics = [
-  { number: "123", label: "Journal Articles" },
-  { number: "12", label: "Conference Papers" },
-  { number: "23", label: "PhD Theses" },
-  { number: "123", label: "Master's Theses" },
-  { number: "123", label: "Patents" }
-]
+'use client'
+
+import { useEffect, useState } from 'react'
+import { getPublications, getPublicationStatistics } from '@/lib/publications'
 
 export default function PublicationsHeader() {
+  const [statistics, setStatistics] = useState([
+    { number: "0", label: "Journal Articles" },
+    { number: "0", label: "Conference Papers" },
+    { number: "0", label: "PhD Theses" },
+    { number: "0", label: "Master's Theses" },
+    { number: "0", label: "Patents" }
+  ])
+
+  useEffect(() => {
+    const fetchStatistics = async () => {
+      try {
+        const publications = await getPublications()
+        const stats = getPublicationStatistics(publications)
+        setStatistics([
+          { number: stats["Journal Articles"].toString(), label: "Journal Articles" },
+          { number: stats["Conference Papers"].toString(), label: "Conference Papers" },
+          { number: stats["PhD Theses"].toString(), label: "PhD Theses" },
+          { number: stats["Master's Theses"].toString(), label: "Master's Theses" },
+          { number: stats["Patents"].toString(), label: "Patents" }
+        ])
+      } catch (error) {
+        console.error('Failed to fetch publication statistics:', error)
+      }
+    }
+
+    fetchStatistics()
+  }, [])
   return (
     <section className="bg-[#F8F8F8] py-16">
       <div className="container mx-auto px-4">

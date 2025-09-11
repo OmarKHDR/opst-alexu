@@ -4,99 +4,59 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-
-const categories = [
-  { id: 1, name: 'All', label: 'All Projects' },
-  { id: 2, name: 'Optical Communications', label: 'Optical Communications' },
-  { id: 3, name: 'Photonic Devices', label: 'Photonic Devices' },
-  { id: 4, name: 'Solar Technology', label: 'Solar Technology' },
-  { id: 5, name: 'Quantum Optics', label: 'Quantum Optics' }
-]
-
-const projects = [
-  {
-    id: 1,
-    name: "Advanced Fiber Optic Networks",
-    description: "Development of next-generation fiber optic communication systems with enhanced signal processing capabilities and reduced latency for global telecommunications infrastructure.",
-    tags: ["ongoing", "funded", "Telecom Corp", "High Priority"],
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`,
-    category: "Optical Communications",
-    topicId: 1
-  },
-  {
-    id: 2,
-    name: "Integrated Photonic Circuits",
-    description: "Design and fabrication of miniaturized photonic integrated circuits for high-speed optical computing and data processing applications in modern electronic systems.",
-    tags: ["ongoing", "research grant", "Tech Institute", "Innovation"],
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`,
-    category: "Photonic Devices",
-    topicId: 2
-  },
-  {
-    id: 3,
-    name: "High-Efficiency Solar Cells",
-    description: "Revolutionary photovoltaic cell designs achieving record-breaking efficiency rates through advanced material engineering and optimized light absorption techniques.",
-    tags: ["completed", "published", "Energy Corp", "Breakthrough"],
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`,
-    category: "Solar Technology",
-    topicId: 3
-  },
-  {
-    id: 4,
-    name: "Quantum Communication Systems",
-    description: "Secure quantum communication networks utilizing quantum entanglement and cryptographic protocols for ultra-secure data transmission and quantum internet applications.",
-    tags: ["ongoing", "government funded", "Defense Research", "Classified"],
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`,
-    category: "Quantum Optics",
-    topicId: 4
-  },
-  {
-    id: 5,
-    name: "Optical Signal Processing",
-    description: "Advanced algorithms and hardware solutions for real-time optical signal processing in high-bandwidth communication systems and network optimization.",
-    tags: ["ongoing", "industry partnership", "Network Solutions", "Commercial"],
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`,
-    category: "Optical Communications",
-    topicId: 1
-  },
-  {
-    id: 6,
-    name: "Laser System Development",
-    description: "Cutting-edge laser technologies for industrial, medical, and research applications with improved power efficiency and beam quality characteristics.",
-    tags: ["completed", "patent pending", "Medical Tech", "Innovation"],
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`,
-    category: "Photonic Devices",
-    topicId: 2
-  }
-]
+import { getProjects } from '@/lib/projects'
+import { getResearchTopics } from '@/lib/research-topics'
+import type { Project } from '@/lib/projects'
+import type { ResearchTopic } from '@/lib/research-topics'
 
 interface ProjectsSectionProps {
-  selectedTopicId?: number
-  onTopicChange?: (topicId: number) => void
+  selectedTopicId?: string;
+  onTopicChange?: (topicId: string) => void;
 }
 
 export default function ProjectsSection({ selectedTopicId, onTopicChange }: ProjectsSectionProps) {
+  const [projects, setProjects] = useState<Project[]>([])
+  const [categories, setCategories] = useState<ResearchTopic[]>([])
+  const [loading, setLoading] = useState(true)
   const [activeCategory, setActiveCategory] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
   const [showAll, setShowAll] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [projectsData, topicsData] = await Promise.all([
+          getProjects(),
+          getResearchTopics()
+        ]);
+        setProjects(projectsData);
+        setCategories([
+          { id: 'all', title: 'All Projects', description: '', image: '', projectsTags: [] },
+          ...topicsData
+        ]);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
   // Update active category when selectedTopicId changes
   useEffect(() => {
     if (selectedTopicId) {
-      const topic = categories.find(cat => cat.id === selectedTopicId + 1) // Adjust for index
+      const topic = categories.find(cat => cat.id === selectedTopicId)
       if (topic) {
-        setActiveCategory(topic.name)
-        if (onTopicChange) {
-          onTopicChange(selectedTopicId)
-        }
+        setActiveCategory(topic.title)
       }
     }
-  }, [selectedTopicId, onTopicChange])
+  }, [selectedTopicId, categories])
 
   // Filter projects based on category and search
   const filteredProjects = projects.filter(project => {
-    const matchesCategory = activeCategory === 'All' || project.category === activeCategory
+    const matchesCategory = activeCategory === 'All' || project.category?.title === activeCategory
     const matchesSearch = project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          project.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -105,10 +65,10 @@ export default function ProjectsSection({ selectedTopicId, onTopicChange }: Proj
 
   const displayedProjects = showAll ? filteredProjects : filteredProjects.slice(0, 3)
 
-  const handleCategoryChange = (categoryName: string, categoryId: number) => {
-    setActiveCategory(categoryName)
-    if (onTopicChange && categoryId > 1) {
-      onTopicChange(categoryId - 1) // Adjust for index
+  const handleCategoryChange = (categoryTitle: string, categoryId: string) => {
+    setActiveCategory(categoryTitle)
+    if (onTopicChange && categoryId !== 'all') {
+      onTopicChange(categoryId)
     }
   }
 
@@ -132,14 +92,14 @@ export default function ProjectsSection({ selectedTopicId, onTopicChange }: Proj
             {categories.map((category) => (
               <button
                 key={category.id}
-                onClick={() => handleCategoryChange(category.name, category.id)}
+                onClick={() => handleCategoryChange(category.title, category.id)}
                 className={`px-4 py-2 rounded-xl font-inter text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 ${
-                  activeCategory === category.name
+                  activeCategory === category.title
                     ? 'bg-[#003366] text-white shadow-md'
                     : 'text-[#555555] hover:text-[#003366] hover:bg-[#F8F8F8]'
                 }`}
               >
-                {category.label}
+                {category.title}
               </button>
             ))}
           </div>
@@ -174,9 +134,11 @@ export default function ProjectsSection({ selectedTopicId, onTopicChange }: Proj
                       <h3 className="font-merriweather text-lg sm:text-xl font-bold text-[#1A1A1A] mb-2 sm:mb-0">
                         {project.name}
                       </h3>
-                      <span className="px-2 sm:px-3 py-1 bg-[#3399FF]/10 text-[#003366] rounded-full text-xs font-inter font-medium border border-[#3399FF]/20 self-start sm:ml-4">
-                        {project.category}
-                      </span>
+                      {project.category && (
+                        <span className="px-2 sm:px-3 py-1 bg-[#3399FF]/10 text-[#003366] rounded-full text-xs font-inter font-medium border border-[#3399FF]/20 self-start sm:ml-4">
+                          {project.category.title}
+                        </span>
+                      )}
                     </div>
                     <p className="font-inter text-sm sm:text-base text-[#555555] leading-relaxed mb-3 sm:mb-4 line-clamp-3 sm:line-clamp-none">
                       {project.description}

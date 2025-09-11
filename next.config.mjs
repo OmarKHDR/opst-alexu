@@ -15,7 +15,9 @@ const nextConfig = {
     unoptimized: true,
   },
   env: {
-    NEXT_PUBLIC_BASE_PATH: isExport ? isGitHubPages ? '/opst-alexu' : '' : ''
+    NEXT_PUBLIC_BASE_PATH: isExport ? isGitHubPages ? '/opst-alexu' : '' : '',
+    NEXT_PUBLIC_CONTENTFUL_ENTITIES_URI: 'https://cdn.contentful.com/spaces/8jah25b7bryc/environments/master/entries',
+    NEXT_PUBLIC_CDA_TOKEN: '69W1F8QEruLJaH6qZcoNPV9izJK4gytIthm_XRx4lEI'
   },
 };
 

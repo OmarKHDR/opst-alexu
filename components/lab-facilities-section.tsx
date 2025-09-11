@@ -1,24 +1,28 @@
-import Image from 'next/image'
+'use client'
 
-const facilities = [
-  {
-    id: 1,
-    name: "Room 1",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/laboratory-facility.png`
-  },
-  {
-    id: 2,
-    name: "Room 1",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/laboratory-facility.png`
-  },
-  {
-    id: 3,
-    name: "Room 1",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/laboratory-facility.png`
-  }
-]
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { getLabFacilities } from '@/lib/lab-facilities'
+import type { LabFacility } from '@/lib/lab-facilities'
 
 export default function LabFacilitiesSection() {
+  const [facilities, setFacilities] = useState<LabFacility[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchFacilities = async () => {
+      try {
+        const data = await getLabFacilities()
+        setFacilities(data)
+      } catch (error) {
+        console.error('Failed to fetch lab facilities:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchFacilities()
+  }, [])
   return (
     <section className="bg-white py-16">
       <div className="container mx-auto px-4">
@@ -31,7 +35,15 @@ export default function LabFacilitiesSection() {
 
         {/* Facilities Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto">
-          {facilities.map((facility) => (
+          {loading ? (
+            <div className="col-span-3 text-center py-12">
+              <p className="font-inter text-[#555555]">Loading facilities...</p>
+            </div>
+          ) : facilities.length === 0 ? (
+            <div className="col-span-3 text-center py-12">
+              <p className="font-inter text-[#555555]">No facilities found.</p>
+            </div>
+          ) : facilities.map((facility) => (
             <div key={facility.id} className="relative group cursor-pointer">
               <div className="relative h-48 sm:h-56 lg:h-64 rounded-lg overflow-hidden">
                 <Image
@@ -41,10 +53,13 @@ export default function LabFacilitiesSection() {
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300"></div>
-                <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4">
-                  <h3 className="font-merriweather text-lg sm:text-xl font-bold text-white">
+                <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4">
+                  <h3 className="font-merriweather text-lg sm:text-xl font-bold text-white mb-1 sm:mb-2">
                     {facility.name}
                   </h3>
+                  <p className="font-inter text-sm text-white/90 line-clamp-2">
+                    {facility.description}
+                  </p>
                 </div>
               </div>
             </div>
