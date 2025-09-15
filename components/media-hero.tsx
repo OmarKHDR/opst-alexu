@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { getArticles } from '@/lib/articles'
+import { getTopNews } from '@/lib/articles'
 
 interface FeaturedItem {
   id: string;
@@ -24,7 +24,7 @@ export default function MediaHero() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const fetchedArticles = await getArticles()
+        const fetchedArticles = await getTopNews()
         // Use the first 3 articles for the hero carousel, or create featured content from them
         const featured = fetchedArticles.slice(0, 3).map(article => ({
           id: article.id,

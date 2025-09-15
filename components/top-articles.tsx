@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getArticles } from '@/lib/articles'
+import { getTopArticles } from '@/lib/articles'
 
 interface Article {
   id: string;
@@ -22,7 +22,7 @@ export default function TopArticles() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const fetchedArticles = await getArticles()
+        const fetchedArticles = await getTopArticles()
         // Get the first 3 articles for top articles section
         setArticles(fetchedArticles.slice(0, 3))
       } catch (err) {

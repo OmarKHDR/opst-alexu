@@ -85,6 +85,158 @@ export async function getArticles(): Promise<Article[]> {
   return articles;
 }
 
+export async function getTopArticles(): Promise<Article[]> {
+  const CACHE_KEY_TOP_ARTICLES = 'contentful.topArticles';
+  // Check cache first (only on client side)
+  if (typeof window !== 'undefined') {
+    const cached = localStorage.getItem(CACHE_KEY_TOP_ARTICLES);
+    if (cached) {
+      const { data, timestamp } = JSON.parse(cached);
+      if (Date.now() - timestamp < CACHE_DURATION) {
+        return data;
+      }
+    }
+  }
+
+  // Fetch from Contentful
+  const response = await fetch(`${process.env.NEXT_PUBLIC_CONTENTFUL_ENTITIES_URI}?content_type=topArticles&include=2`, {
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_CDA_TOKEN}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch top articles');
+  }
+
+  const result = await response.json();
+
+  // Transform Contentful response to our format
+  const articles = result.items.map((item: any) => {
+    // Find the referenced article
+    const referencedArticle = result.includes?.Entry?.find((entry: any) => entry.sys.id === item.fields.article.sys.id);
+    if (!referencedArticle) return null;
+
+    // Handle image asset
+    let imageUrl = '';
+    if (referencedArticle.fields.image) {
+      const asset = result.includes?.Asset?.find((asset: any) => asset.sys.id === referencedArticle.fields.image.sys.id);
+      if (asset) {
+        imageUrl = `https:${asset.fields.file.url}`;
+      }
+    }
+
+    // Handle RichText content
+    let contentHtml = '';
+    if (referencedArticle.fields.content) {
+      contentHtml = documentToHtmlString(referencedArticle.fields.content);
+    }
+
+    return {
+      id: referencedArticle.sys.id,
+      title: referencedArticle.fields.title || '',
+      author: referencedArticle.fields.author || '',
+      date: referencedArticle.fields.date ? new Date(referencedArticle.fields.date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).replace(/\//g, '/') : '',
+      tags: referencedArticle.fields.tags || [],
+      category: referencedArticle.fields.category || '',
+      readTime: referencedArticle.fields.readTime || '',
+      excerpt: referencedArticle.fields.excerpt || '',
+      content: contentHtml,
+      image: imageUrl,
+    };
+  }).filter(Boolean); // Remove null entries
+
+  // Cache the results (only on client side)
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(CACHE_KEY_TOP_ARTICLES, JSON.stringify({
+      data: articles,
+      timestamp: Date.now(),
+    }));
+  }
+
+  return articles;
+}
+
+export async function getTopNews(): Promise<Article[]> {
+  const CACHE_KEY_TOP_NEWS = 'contentful.topNews';
+  // Check cache first (only on client side)
+  if (typeof window !== 'undefined') {
+    const cached = localStorage.getItem(CACHE_KEY_TOP_NEWS);
+    if (cached) {
+      const { data, timestamp } = JSON.parse(cached);
+      if (Date.now() - timestamp < CACHE_DURATION) {
+        return data;
+      }
+    }
+  }
+
+  // Fetch from Contentful
+  const response = await fetch(`${process.env.NEXT_PUBLIC_CONTENTFUL_ENTITIES_URI}?content_type=topNews&include=2`, {
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_CDA_TOKEN}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch top news');
+  }
+
+  const result = await response.json();
+
+  // Transform Contentful response to our format
+  const articles = result.items.map((item: any) => {
+    // Find the referenced article
+    const referencedArticle = result.includes?.Entry?.find((entry: any) => entry.sys.id === item.fields.article.sys.id);
+    if (!referencedArticle) return null;
+
+    // Handle image asset
+    let imageUrl = '';
+    if (referencedArticle.fields.image) {
+      const asset = result.includes?.Asset?.find((asset: any) => asset.sys.id === referencedArticle.fields.image.sys.id);
+      if (asset) {
+        imageUrl = `https:${asset.fields.file.url}`;
+      }
+    }
+
+    // Handle RichText content
+    let contentHtml = '';
+    if (referencedArticle.fields.content) {
+      contentHtml = documentToHtmlString(referencedArticle.fields.content);
+    }
+
+    return {
+      id: referencedArticle.sys.id,
+      title: referencedArticle.fields.title || '',
+      author: referencedArticle.fields.author || '',
+      date: referencedArticle.fields.date ? new Date(referencedArticle.fields.date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).replace(/\//g, '/') : '',
+      tags: referencedArticle.fields.tags || [],
+      category: referencedArticle.fields.category || '',
+      readTime: referencedArticle.fields.readTime || '',
+      excerpt: referencedArticle.fields.excerpt || '',
+      content: contentHtml,
+      image: imageUrl,
+    };
+  }).filter(Boolean); // Remove null entries
+
+  // Cache the results (only on client side)
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(CACHE_KEY_TOP_NEWS, JSON.stringify({
+      data: articles,
+      timestamp: Date.now(),
+    }));
+  }
+
+  return articles;
+}
+
 export async function getArticleById(id: string): Promise<Article | null> {
   const articles = await getArticles();
   return articles.find(article => article.id === id) || null;
