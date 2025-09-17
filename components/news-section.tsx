@@ -4,54 +4,55 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-
-const newsItems = [
-  {
-    id: 1,
-    title: "News Heading",
-    date: "10/10/2024",
-    author: "hello world",
-    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate dul quis porta gravida. Duis ex nunc, bibendum vitae elementum a, cursus sollicitudin nibh. Phasellus lectus enim, placerat ac tempor sit amet, finibus a velit.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/news-placeholder.png`
-  },
-  {
-    id: 2,
-    title: "Research Breakthrough",
-    date: "15/10/2024",
-    author: "research team",
-    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate dul quis porta gravida. Duis ex nunc, bibendum vitae elementum a, cursus sollicitudin nibh. Phasellus lectus enim, placerat ac tempor sit amet, finibus a velit.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/news-placeholder.png`
-  },
-  {
-    id: 3,
-    title: "Solar Innovation",
-    date: "20/10/2024",
-    author: "innovation lab",
-    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate dul quis porta gravida. Duis ex nunc, bibendum vitae elementum a, cursus sollicitudin nibh. Phasellus lectus enim, placerat ac tempor sit amet, finibus a velit.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/news-placeholder.png`
-  }
-]
+import { getHomeSection } from '@/lib/generic'
+import { Article } from '@/lib/articles'
+import ArticleModal from './article-modal'
 
 export default function NewsSection() {
+  const [newsItems, setNewsItems] = useState<Article[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoScrolling, setIsAutoScrolling] = useState(true)
+  const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const autoScrollRef = useRef<NodeJS.Timeout | null>(null)
 
+  useEffect(() => {
+    const fetchHomeSection = async () => {
+      try {
+        const homeSectionData = await getHomeSection()
+        setNewsItems(homeSectionData?.recentNews || [])
+      } catch (err) {
+        setError('Failed to load news section')
+        console.error('Error fetching news section:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchHomeSection()
+  }, [])
+
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % newsItems.length)
-    setIsAutoScrolling(false)
-    setTimeout(() => setIsAutoScrolling(true), 10000) // Resume after 10 seconds
+    if (newsItems.length > 0) {
+      setCurrentSlide((prev) => (prev + 1) % newsItems.length)
+      setIsAutoScrolling(false)
+      setTimeout(() => setIsAutoScrolling(true), 10000) // Resume after 10 seconds
+    }
   }
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + newsItems.length) % newsItems.length)
-    setIsAutoScrolling(false)
-    setTimeout(() => setIsAutoScrolling(true), 10000) // Resume after 10 seconds
+    if (newsItems.length > 0) {
+      setCurrentSlide((prev) => (prev - 1 + newsItems.length) % newsItems.length)
+      setIsAutoScrolling(false)
+      setTimeout(() => setIsAutoScrolling(true), 10000) // Resume after 10 seconds
+    }
   }
 
   // Auto-scroll functionality
   useEffect(() => {
-    if (isAutoScrolling) {
+    if (isAutoScrolling && newsItems.length > 0) {
       autoScrollRef.current = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % newsItems.length)
       }, 5000) // Change slide every 5 seconds
@@ -74,6 +75,59 @@ export default function NewsSection() {
 
   const handleMouseLeave = () => {
     setIsAutoScrolling(true)
+  }
+
+  const handleKnowMoreClick = () => {
+    setSelectedArticleId(newsItems[currentSlide].id)
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setSelectedArticleId(null)
+  }
+
+  if (loading) {
+    return (
+      <section className="bg-[#003366] py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FDB813] mx-auto"></div>
+            <p className="mt-4 text-white opacity-90">Loading news...</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className="bg-[#003366] py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center text-red-400">
+            <p>{error}</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (newsItems.length === 0) {
+    return (
+      <section className="bg-[#003366] py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center text-white">
+            <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+              </svg>
+            </div>
+            <h2 className="font-merriweather text-2xl font-bold mb-4">Recent News</h2>
+            <p className="font-inter text-lg opacity-90">No news available at the moment.</p>
+          </div>
+        </div>
+      </section>
+    )
   }
 
   return (
@@ -110,10 +164,16 @@ export default function NewsSection() {
                     <p className="font-inter text-xs sm:text-sm text-[#FDB813] mb-3 sm:mb-4">
                       {newsItems[currentSlide].date} by {newsItems[currentSlide].author}
                     </p>
-                    <p className="font-inter text-sm sm:text-base leading-relaxed mb-4 sm:mb-6 opacity-90 line-clamp-4 sm:line-clamp-none">
-                      {newsItems[currentSlide].content}
-                    </p>
-                    <Button className="bg-[#FDB813] hover:bg-[#FDB813]/90 text-[#003366] font-inter font-medium shadow-lg hover:shadow-xl transition-all duration-200 focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-transparent w-full sm:w-auto">
+                    <div
+                      className="font-inter text-sm sm:text-base leading-relaxed mb-4 sm:mb-6 opacity-90 line-clamp-4 sm:line-clamp-none prose prose-sm max-w-none"
+                      dangerouslySetInnerHTML={{
+                        __html: newsItems[currentSlide].excerpt || newsItems[currentSlide].content.substring(0, 200) + '...'
+                      }}
+                    />
+                    <Button
+                      className="bg-[#FDB813] hover:bg-[#FDB813]/90 text-[#003366] font-inter font-medium shadow-lg hover:shadow-xl transition-all duration-200 focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-transparent w-full sm:w-auto"
+                      onClick={handleKnowMoreClick}
+                    >
                       KNOW MORE
                     </Button>
                   </div>
@@ -162,6 +222,13 @@ export default function NewsSection() {
           </div>
         </div>
       </div>
+
+      {/* Article Modal */}
+      <ArticleModal
+        articleId={selectedArticleId}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </section>
   )
 }

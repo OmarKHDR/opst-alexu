@@ -1,10 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Facebook, Linkedin, Youtube, Twitter, MapPin, Mail, Phone, Send, User, MessageSquare } from 'lucide-react'
+import { getContactInfo, ContactInfo } from '@/lib/generic'
 
 export default function ContactSection() {
+  const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -12,6 +16,22 @@ export default function ContactSection() {
     subject: '',
     message: ''
   })
+
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      try {
+        const fetchedContactInfo = await getContactInfo()
+        setContactInfo(fetchedContactInfo)
+      } catch (err) {
+        setError('Failed to load contact information')
+        console.error('Error fetching contact info:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchContactInfo()
+  }, [])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -43,10 +63,10 @@ export default function ContactSection() {
             Contact Us
           </h1>
           <div className="w-20 h-1 bg-[#FDB813] mx-auto mb-6"></div>
-          <p className="font-inter text-lg text-[#555555] max-w-2xl mx-auto leading-relaxed">
-            Feel free to contact us and we will get back to you as soon as possible. 
-            We're here to help with any questions about our research, programs, or collaborations.
-          </p>
+          <div
+            className="font-inter text-lg text-[#555555] max-w-2xl mx-auto leading-relaxed prose prose-lg max-w-none"
+            dangerouslySetInnerHTML={{ __html: contactInfo?.pageSubtitle || 'Feel free to contact us and we will get back to you as soon as possible. We\'re here to help with any questions about our research, programs, or collaborations.' }}
+          />
         </div>
 
         <div className="grid lg:grid-cols-5 gap-12 max-w-7xl mx-auto">
@@ -205,20 +225,20 @@ export default function ContactSection() {
                 <div className="space-y-4 pl-16">
                   <div className="flex items-center">
                     <Mail size={18} className="text-[#555555] mr-3" />
-                    <a 
-                      href="mailto:opst@alexu.edu.eg" 
+                    <a
+                      href={`mailto:${contactInfo?.email || 'opst@alexu.edu.eg'}`}
                       className="font-inter text-[#555555] hover:text-[#003366] transition-colors"
                     >
-                      opst@alexu.edu.eg
+                      {contactInfo?.email || 'opst@alexu.edu.eg'}
                     </a>
                   </div>
                   <div className="flex items-center">
                     <Phone size={18} className="text-[#555555] mr-3" />
-                    <a 
-                      href="tel:+201000101001" 
+                    <a
+                      href={`tel:${contactInfo?.phoneNumber || '+201000101001'}`}
                       className="font-inter text-[#555555] hover:text-[#003366] transition-colors"
                     >
-                      +201000101001
+                      {contactInfo?.phoneNumber || '+201000101001'}
                     </a>
                   </div>
                 </div>
@@ -236,34 +256,50 @@ export default function ContactSection() {
                   Stay connected with our latest research updates and news
                 </p>
                 <div className="flex gap-3">
-                  <a
-                    href="#"
-                    className="w-12 h-12 bg-[#1877F2] rounded-2xl flex items-center justify-center text-white hover:bg-[#1877F2]/90 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#1877F2] focus:ring-offset-2"
-                    aria-label="Facebook"
-                  >
-                    <Facebook size={20} />
-                  </a>
-                  <a
-                    href="#"
-                    className="w-12 h-12 bg-[#0A66C2] rounded-2xl flex items-center justify-center text-white hover:bg-[#0A66C2]/90 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#0A66C2] focus:ring-offset-2"
-                    aria-label="LinkedIn"
-                  >
-                    <Linkedin size={20} />
-                  </a>
-                  <a
-                    href="#"
-                    className="w-12 h-12 bg-[#FF0000] rounded-2xl flex items-center justify-center text-white hover:bg-[#FF0000]/90 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#FF0000] focus:ring-offset-2"
-                    aria-label="YouTube"
-                  >
-                    <Youtube size={20} />
-                  </a>
-                  <a
-                    href="#"
-                    className="w-12 h-12 bg-[#1DA1F2] rounded-2xl flex items-center justify-center text-white hover:bg-[#1DA1F2]/90 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#1DA1F2] focus:ring-offset-2"
-                    aria-label="Twitter"
-                  >
-                    <Twitter size={20} />
-                  </a>
+                  {contactInfo?.facebook && (
+                    <a
+                      href={contactInfo.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-12 h-12 bg-[#1877F2] rounded-2xl flex items-center justify-center text-white hover:bg-[#1877F2]/90 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#1877F2] focus:ring-offset-2"
+                      aria-label="Facebook"
+                    >
+                      <Facebook size={20} />
+                    </a>
+                  )}
+                  {contactInfo?.linkedin && (
+                    <a
+                      href={contactInfo.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-12 h-12 bg-[#0A66C2] rounded-2xl flex items-center justify-center text-white hover:bg-[#0A66C2]/90 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#0A66C2] focus:ring-offset-2"
+                      aria-label="LinkedIn"
+                    >
+                      <Linkedin size={20} />
+                    </a>
+                  )}
+                  {contactInfo?.youtube && (
+                    <a
+                      href={contactInfo.youtube}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-12 h-12 bg-[#FF0000] rounded-2xl flex items-center justify-center text-white hover:bg-[#FF0000]/90 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#FF0000] focus:ring-offset-2"
+                      aria-label="YouTube"
+                    >
+                      <Youtube size={20} />
+                    </a>
+                  )}
+                  {contactInfo?.twitter && (
+                    <a
+                      href={contactInfo.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-12 h-12 bg-[#1DA1F2] rounded-2xl flex items-center justify-center text-white hover:bg-[#1DA1F2]/90 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#1DA1F2] focus:ring-offset-2"
+                      aria-label="Twitter"
+                    >
+                      <Twitter size={20} />
+                    </a>
+                  )}
                 </div>
               </div>
             </div>

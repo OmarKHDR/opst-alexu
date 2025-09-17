@@ -1,4 +1,83 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { getVisionMissionValues } from '@/lib/generic'
+
+interface VisionMissionValues {
+  id: string;
+  vision: string;
+  mission: string;
+  values: string;
+}
+
 export default function VisionMissionValues() {
+  const [vmv, setVmv] = useState<VisionMissionValues | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchVmv = async () => {
+      try {
+        const fetchedVmv = await getVisionMissionValues()
+        setVmv(fetchedVmv)
+      } catch (err) {
+        setError('Failed to load vision mission values')
+        console.error('Error fetching vision mission values:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchVmv()
+  }, [])
+
+  if (loading) {
+    return (
+      <section className="bg-[#003366] py-12 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FDB813] mx-auto"></div>
+            <p className="mt-4 text-white opacity-90">Loading content...</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className="bg-[#003366] py-12 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto text-center">
+            <p className="text-red-400">{error}</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (!vmv) {
+    return (
+      <section className="bg-[#003366] py-12 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto text-center text-white">
+            <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 className="font-merriweather text-2xl font-bold mb-4">
+              Content Coming Soon
+            </h2>
+            <p className="font-inter text-lg opacity-90">
+              We're working on bringing you our vision, mission, and values. Check back soon.
+            </p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className="bg-[#003366] py-12 md:py-16">
       <div className="container mx-auto px-4">
@@ -12,9 +91,7 @@ export default function VisionMissionValues() {
               </h2>
               <div className="w-12 md:w-16 h-1 bg-[#FDB813] mx-auto mb-4 md:mb-6"></div>
               <p className="font-inter text-sm md:text-base leading-relaxed opacity-90">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 
-                veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
+                {vmv.vision}
               </p>
             </div>
 
@@ -25,9 +102,7 @@ export default function VisionMissionValues() {
               </h2>
               <div className="w-12 md:w-16 h-1 bg-[#FDB813] mx-auto mb-4 md:mb-6"></div>
               <p className="font-inter text-sm md:text-base leading-relaxed opacity-90">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 
-                veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
+                {vmv.mission}
               </p>
             </div>
           </div>
@@ -39,9 +114,7 @@ export default function VisionMissionValues() {
             </h2>
             <div className="w-12 md:w-16 h-1 bg-[#FDB813] mx-auto mb-4 md:mb-6"></div>
             <p className="font-inter text-sm md:text-base leading-relaxed opacity-90 max-w-3xl mx-auto">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 
-              veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
+              {vmv.values}
             </p>
           </div>
         </div>

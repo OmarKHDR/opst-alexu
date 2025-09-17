@@ -76,3 +76,75 @@ export async function getPeople(): Promise<Person[]> {
 
   return people;
 }
+
+export async function getPrincipalInvestigator(): Promise<Person | null> {
+  const CACHE_KEY_PI = 'contentful.principalInvestigator';
+
+  // Check cache first
+  const cached = localStorage.getItem(CACHE_KEY_PI);
+  if (cached) {
+    const { data, timestamp } = JSON.parse(cached);
+    if (Date.now() - timestamp < CACHE_DURATION) {
+      return data;
+    }
+  }
+
+  // Fetch from Contentful
+  const response = await fetch(`${process.env.NEXT_PUBLIC_CONTENTFUL_ENTITIES_URI}?content_type=principalInvestigator&include=2`, {
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_CDA_TOKEN}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch principal investigator');
+  }
+
+  const result = await response.json();
+
+  if (!result.items || result.items.length === 0) {
+    return null;
+  }
+
+  const item = result.items[0];
+
+  // Find the referenced person
+  const referencedPerson = result.includes?.Entry?.find((entry: any) => entry.sys.id === item.fields.person.sys.id);
+  if (!referencedPerson) {
+    return null;
+  }
+
+  // Handle image asset for the referenced person
+  let imageUrl = `${process.env.NEXT_PUBLIC_BASE_PATH}/professional-headshot.png`;
+
+  if (referencedPerson.fields.image?.sys?.id) {
+    const imageAsset = result.includes?.Asset?.find((a: any) => a.sys.id === referencedPerson.fields.image.sys.id);
+    if (imageAsset?.fields?.file?.url) {
+      imageUrl = `https:${imageAsset.fields.file.url}`;
+    }
+  }
+
+  const person: Person = {
+    id: referencedPerson.sys.id,
+    name: referencedPerson.fields.name || '',
+    title: referencedPerson.fields.title || '',
+    degree: referencedPerson.fields.degree || '',
+    affiliation: referencedPerson.fields.affiliation || '',
+    description: referencedPerson.fields.description || '',
+    researchInterests: referencedPerson.fields.researchInterests || [],
+    image: imageUrl,
+    linkedin: referencedPerson.fields.linkedin || '#',
+    cvLink: referencedPerson.fields.cvLink || '#',
+    email: referencedPerson.fields.email || '',
+    orcid: referencedPerson.fields.orcid || '#',
+    academicCategory: referencedPerson.fields.academicCategory || ''
+  };
+
+  // Cache the results
+  localStorage.setItem(CACHE_KEY_PI, JSON.stringify({
+    data: person,
+    timestamp: Date.now(),
+  }));
+
+  return person;
+}

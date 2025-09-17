@@ -1,54 +1,76 @@
-import Image from 'next/image'
+'use client'
 
-const historyEvents = [
-  {
-    year: "2023",
-    title: "some event",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    side: "right"
-  },
-  {
-    year: "2022",
-    title: "some event", 
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    side: "left"
-  },
-  {
-    year: "July 2021",
-    title: "some event",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    side: "right"
-  },
-  {
-    year: "Oct 2021",
-    title: "some event",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    side: "left"
-  },
-  {
-    year: "2020",
-    title: "Some Event",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    side: "right",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`
-  },
-  {
-    year: "2019",
-    title: "some event",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    side: "left",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/colorful-network-visualization.png`
-  },
-  {
-    year: "2018",
-    title: "Lab Created",
-    description: "The OPST Laboratory was officially established, marking the beginning of our journey in advancing optics, photonics, and solar technologies research.",
-    side: "right",
-    isLabCreated: true
-  }
-]
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { getTimelineEvents, TimelineEvent } from '@/lib/timeline'
 
 export default function LabHistory() {
+  const [events, setEvents] = useState<TimelineEvent[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const fetchedEvents = await getTimelineEvents()
+        setEvents(fetchedEvents)
+      } catch (err) {
+        setError('Failed to load timeline events')
+        console.error('Error fetching timeline events:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchEvents()
+  }, [])
+
+  if (loading) {
+    return (
+      <section className="bg-[#F8F8F8] py-12 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#003366] mx-auto"></div>
+            <p className="mt-4 text-[#555555]">Loading timeline...</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className="bg-[#F8F8F8] py-12 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-red-600">{error}</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (events.length === 0) {
+    return (
+      <section className="bg-[#F8F8F8] py-12 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="w-16 h-16 bg-[#FDB813]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-[#FDB813]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 className="font-merriweather text-2xl font-bold text-[#1A1A1A] mb-4">
+              Our History
+            </h2>
+            <p className="font-inter text-[#555555] leading-relaxed">
+              We're working on bringing you our timeline. Check back soon.
+            </p>
+          </div>
+        </div>
+      </section>
+    )
+  }
   return (
     <section className="bg-[#F8F8F8] py-12 md:py-16">
       <div className="container mx-auto px-4">
@@ -68,8 +90,8 @@ export default function LabHistory() {
 
             {/* Timeline Events */}
             <div className="space-y-6 md:space-y-8">
-              {historyEvents.map((event, index) => (
-                <div key={index} className="relative">
+              {events.map((event: TimelineEvent, index: number) => (
+                <div key={event.id} className="relative">
                   {/* Desktop Timeline Dot */}
                   <div className={`hidden md:block absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full z-10 ${
                     event.isLabCreated ? 'bg-[#003366] border-2 border-white shadow-lg' : 'bg-[#FDB813]'
@@ -89,11 +111,11 @@ export default function LabHistory() {
                       }`}>
                         <div className="flex items-center gap-2 mb-2">
                           <span className={`text-xs font-medium px-2 py-1 rounded-full ${
-                            event.isLabCreated 
-                              ? 'text-white bg-[#003366]' 
+                            event.isLabCreated
+                              ? 'text-white bg-[#003366]'
                               : 'text-[#FDB813] bg-[#FDB813]/10'
                           }`}>
-                            {event.year}
+                            {event.eventDate}
                           </span>
                         </div>
                         <h3 className={`font-merriweather text-base font-bold mb-2 ${
@@ -101,7 +123,7 @@ export default function LabHistory() {
                         }`}>
                           {event.title}
                         </h3>
-                        
+
                         {event.image && (
                           <div className="w-full h-20 mb-3 rounded-lg overflow-hidden">
                             <Image
@@ -113,9 +135,10 @@ export default function LabHistory() {
                             />
                           </div>
                         )}
-                        <p className="font-inter text-xs text-[#555555] leading-relaxed">
-                          {event.description}
-                        </p>
+                        <div
+                          className="font-inter text-xs text-[#555555] leading-relaxed prose prose-sm max-w-none"
+                          dangerouslySetInnerHTML={{ __html: event.description }}
+                        />
                       </div>
                     </div>
 
@@ -126,11 +149,11 @@ export default function LabHistory() {
                       }`}>
                         <div className="flex items-center gap-2 mb-3">
                           <span className={`text-xs font-medium px-3 py-1 rounded-full ${
-                            event.isLabCreated 
-                              ? 'text-white bg-[#003366]' 
+                            event.isLabCreated
+                              ? 'text-white bg-[#003366]'
                               : 'text-[#FDB813] bg-[#FDB813]/10'
                           }`}>
-                            {event.year}
+                            {event.eventDate}
                           </span>
                         </div>
                         <h3 className={`font-merriweather text-lg font-bold mb-3 ${
@@ -138,7 +161,7 @@ export default function LabHistory() {
                         }`}>
                           {event.title}
                         </h3>
-                        
+
                         {event.image && (
                           <div className="w-full h-24 mb-4 rounded-xl overflow-hidden">
                             <Image
@@ -150,9 +173,10 @@ export default function LabHistory() {
                             />
                           </div>
                         )}
-                        <p className="font-inter text-sm text-[#555555] leading-relaxed">
-                          {event.description}
-                        </p>
+                        <div
+                          className="font-inter text-sm text-[#555555] leading-relaxed prose prose-sm max-w-none"
+                          dangerouslySetInnerHTML={{ __html: event.description }}
+                        />
                       </div>
                     </div>
                   </div>

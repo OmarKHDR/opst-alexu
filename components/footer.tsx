@@ -1,8 +1,26 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Facebook, Linkedin, Youtube, Twitter } from 'lucide-react'
+import { getContactInfo, ContactInfo } from '@/lib/generic'
 
 export default function Footer() {
+  const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null)
+
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      try {
+        const fetchedContactInfo = await getContactInfo()
+        setContactInfo(fetchedContactInfo)
+      } catch (err) {
+        console.error('Error fetching contact info for footer:', err)
+      }
+    }
+
+    fetchContactInfo()
+  }, [])
   return (
     <footer className="bg-[#003366] text-white">
       {/* Main Footer */}
@@ -16,14 +34,14 @@ export default function Footer() {
               <p>Alexandria University</p>
               <p>CSMI Building</p>
               <p>
-                <Link 
-                  href="mailto:email@email.com" 
+                <Link
+                  href={`mailto:${contactInfo?.email || 'email@email.com'}`}
                   className="hover:text-[#FDB813] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] rounded"
                 >
-                  email@email.com
+                  {contactInfo?.email || 'email@email.com'}
                 </Link>
               </p>
-              <p>+201001101010</p>
+              <p>{contactInfo?.phoneNumber || '+201001101010'}</p>
               <p>
                 <Link 
                   href="/contact" 
@@ -57,34 +75,50 @@ export default function Footer() {
               Stay connected with our latest research and updates through our social media channels and newsletter.
             </p>
             <div className="flex space-x-4">
-              <Link 
-                href="#" 
-                className="p-3 bg-white/10 rounded-xl hover:bg-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] transform hover:scale-110"
-                aria-label="Follow us on Facebook"
-              >
-                <Facebook size={20} />
-              </Link>
-              <Link 
-                href="#" 
-                className="p-3 bg-white/10 rounded-xl hover:bg-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] transform hover:scale-110"
-                aria-label="Follow us on LinkedIn"
-              >
-                <Linkedin size={20} />
-              </Link>
-              <Link 
-                href="#" 
-                className="p-3 bg-white/10 rounded-xl hover:bg-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] transform hover:scale-110"
-                aria-label="Follow us on YouTube"
-              >
-                <Youtube size={20} />
-              </Link>
-              <Link 
-                href="#" 
-                className="p-3 bg-white/10 rounded-xl hover:bg-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] transform hover:scale-110"
-                aria-label="Follow us on Twitter"
-              >
-                <Twitter size={20} />
-              </Link>
+              {contactInfo?.facebook && (
+                <Link
+                  href={contactInfo.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 bg-white/10 rounded-xl hover:bg-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] transform hover:scale-110"
+                  aria-label="Follow us on Facebook"
+                >
+                  <Facebook size={20} />
+                </Link>
+              )}
+              {contactInfo?.linkedin && (
+                <Link
+                  href={contactInfo.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 bg-white/10 rounded-xl hover:bg-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] transform hover:scale-110"
+                  aria-label="Follow us on LinkedIn"
+                >
+                  <Linkedin size={20} />
+                </Link>
+              )}
+              {contactInfo?.youtube && (
+                <Link
+                  href={contactInfo.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 bg-white/10 rounded-xl hover:bg-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] transform hover:scale-110"
+                  aria-label="Follow us on YouTube"
+                >
+                  <Youtube size={20} />
+                </Link>
+              )}
+              {contactInfo?.twitter && (
+                <Link
+                  href={contactInfo.twitter}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 bg-white/10 rounded-xl hover:bg-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] transform hover:scale-110"
+                  aria-label="Follow us on Twitter"
+                >
+                  <Twitter size={20} />
+                </Link>
+              )}
             </div>
           </div>
         </div>
