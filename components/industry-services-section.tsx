@@ -1,22 +1,32 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-
-const services = [
-  {
-    id: 1,
-    title: "Technical Consulting",
-    description: "Expert technical consulting services providing specialized knowledge in optical systems, photonic applications, and advanced engineering solutions. Our experienced team offers comprehensive support for industry and academic challenges.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/technical-consulting-bg.png`
-  },
-  {
-    id: 2,
-    title: "Research Partnership",
-    description: "Collaborative research partnerships with industry leaders, government agencies, and international institutions. We provide access to cutting-edge facilities, expertise, and innovative solutions for complex engineering challenges and research endeavors.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/research-partnership-bg.png`
-  }
-]
+import { getServices, Service } from '@/lib/services'
 
 export default function IndustryServicesSection() {
+  const [services, setServices] = useState<Service[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setLoading(true)
+        const data = await getServices()
+        setServices(data)
+      } catch (err) {
+        setError('Failed to load services')
+        console.error('Error fetching services:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchServices()
+  }, [])
+
   return (
     <section className="bg-[#F8F8F8] py-16">
       <div className="container mx-auto px-4">
@@ -30,8 +40,35 @@ export default function IndustryServicesSection() {
           </p>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="max-w-4xl mx-auto text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#003366]"></div>
+            <p className="mt-4 text-[#555555] font-inter">Loading services...</p>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="max-w-4xl mx-auto text-center py-12">
+            <p className="text-red-600 font-inter mb-4">{error}</p>
+            <Button
+              onClick={() => window.location.reload()}
+              className="bg-[#003366] hover:bg-[#003366]/90 text-white"
+            >
+              Try Again
+            </Button>
+          </div>
+        )}
+
         {/* Services Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-4xl mx-auto mb-6 sm:mb-8">
+          {!loading && !error && services.length === 0 && (
+            <div className="col-span-full text-center py-12">
+              <p className="text-[#555555] font-inter">No services found.</p>
+            </div>
+          )}
+
           {services.map((service) => (
             <div key={service.id} className="relative h-56 sm:h-64 rounded-xl sm:rounded-2xl overflow-hidden group cursor-pointer">
               {/* Background Image */}

@@ -1,103 +1,32 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Building2, MapPin, Clock, DollarSign, Briefcase } from 'lucide-react'
-
-const jobOpportunities = [
-  {
-    id: 1,
-    title: "Senior Optical Engineer",
-    company: "TechCorp Solutions",
-    description: "Lead optical systems design and development for next-generation communication technologies. Requires expertise in fiber optics, laser systems, and photonic device integration with 5+ years experience.",
-    tags: ["hybrid", "full time", "60$ - 80$ /hour", "Senior"],
-    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
-    location: "Cairo, Egypt",
-    type: "Engineering",
-    experience: "5+ years"
-  },
-  {
-    id: 2,
-    title: "Photonics Research Scientist",
-    company: "Innovation Labs",
-    description: "Conduct cutting-edge research in photonic materials and devices. Opportunity to work on breakthrough technologies in quantum optics and advanced communication systems.",
-    tags: ["onsite", "full time", "45$ - 65$ /hour", "Scientist"],
-    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
-    location: "Alexandria, Egypt",
-    type: "Research",
-    experience: "3+ years"
-  },
-  {
-    id: 3,
-    title: "Solar Technology Specialist",
-    company: "GreenTech Energy",
-    description: "Develop and optimize solar energy systems and photovoltaic technologies. Focus on improving efficiency and sustainability of renewable energy solutions.",
-    tags: ["remote", "full time", "35$ - 50$ /hour", "Specialist"],
-    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
-    location: "Remote",
-    type: "Energy",
-    experience: "2+ years"
-  },
-  {
-    id: 4,
-    title: "Optical Communications Engineer",
-    company: "DataFlow Systems",
-    description: "Design and implement high-speed optical communication networks. Work with advanced fiber optic systems and network optimization technologies.",
-    tags: ["onsite", "full time", "40$ - 60$ /hour", "Engineer"],
-    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
-    location: "Giza, Egypt",
-    type: "Communications",
-    experience: "3+ years"
-  },
-  {
-    id: 5,
-    title: "Junior Photonics Engineer",
-    company: "StartupTech",
-    description: "Entry-level position for recent graduates in photonics or related fields. Opportunity to work on innovative projects and grow with a dynamic team.",
-    tags: ["onsite", "full time", "25$ - 35$ /hour", "Junior"],
-    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
-    location: "Alexandria, Egypt",
-    type: "Engineering",
-    experience: "0-2 years"
-  },
-  {
-    id: 6,
-    title: "Laser Systems Technician",
-    company: "Precision Optics",
-    description: "Maintain and operate advanced laser systems for industrial and research applications. Requires technical expertise and attention to detail.",
-    tags: ["onsite", "full time", "30$ - 40$ /hour", "Technician"],
-    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
-    location: "Cairo, Egypt",
-    type: "Technical",
-    experience: "2+ years"
-  },
-  {
-    id: 7,
-    title: "Renewable Energy Consultant",
-    company: "EcoSolutions",
-    description: "Provide consulting services for renewable energy projects with focus on solar and photonic technologies. Client-facing role with travel opportunities.",
-    tags: ["hybrid", "full time", "50$ - 70$ /hour", "Consultant"],
-    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
-    location: "Multiple Cities",
-    type: "Consulting",
-    experience: "4+ years"
-  },
-  {
-    id: 8,
-    title: "Optical Design Engineer",
-    company: "VisionTech",
-    description: "Design optical systems for consumer electronics and industrial applications. Work with cutting-edge CAD software and prototyping equipment.",
-    tags: ["onsite", "full time", "45$ - 60$ /hour", "Designer"],
-    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
-    location: "Alexandria, Egypt",
-    type: "Design",
-    experience: "3+ years"
-  }
-]
+import { getOpportunities, Opportunity } from '@/lib/opportunities'
 
 export default function JobOpportunitiesSection() {
+  const [opportunities, setOpportunities] = useState<Opportunity[]>([])
+  const [loading, setLoading] = useState(true)
   const [showAll, setShowAll] = useState(false)
-  const displayedJobs = showAll ? jobOpportunities : jobOpportunities.slice(0, 4)
+
+  useEffect(() => {
+    const fetchOpportunities = async () => {
+      try {
+        const data = await getOpportunities()
+        const jobOpportunities = data.filter(opp => opp.type === 'Job Opportunity')
+        setOpportunities(jobOpportunities)
+      } catch (error) {
+        console.error('Failed to fetch job opportunities:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchOpportunities()
+  }, [])
+
+  const displayedJobs = showAll ? opportunities : opportunities.slice(0, 4)
 
   return (
     <section className="bg-[#F8F8F8] py-16">
@@ -194,9 +123,9 @@ export default function JobOpportunitiesSection() {
         </div>
 
         {/* See More Button */}
-        {jobOpportunities.length > 4 && (
+        {opportunities.length > 4 && (
           <div className="text-center mt-8">
-            <Button 
+            <Button
               onClick={() => setShowAll(!showAll)}
               className="bg-[#FDB813] hover:bg-[#FDB813]/90 text-[#003366] font-inter font-medium px-6 py-3 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2"
             >

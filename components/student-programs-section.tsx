@@ -1,35 +1,48 @@
+"use client"
+
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Clock, Users, Calendar, CheckCircle } from 'lucide-react'
-
-const programs = [
-  {
-    id: 1,
-    title: "Summer Training Program",
-    description: "Intensive 10-week training program providing undergraduate students with hands-on laboratory experience, advanced research methodologies, and exposure to cutting-edge optical systems and photonic applications. Students work directly with faculty and graduate researchers.",
-    duration: "10 weeks",
-    capacity: "25 Students",
-    applicationStatus: "opened",
-    startDate: "June 2025",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/students-working-lab.png`,
-    buttonText: "APPLY NOW",
-    highlights: ["Hands-on Lab Experience", "Research Methodology", "Faculty Mentorship", "Certificate of Completion"]
-  },
-  {
-    id: 2,
-    title: "Graduation Project Support",
-    description: "Comprehensive graduation project support including project supervision, technical guidance, access to advanced engineering systems, project ideation, methodology development, technical resources, and thesis writing assistance for final year students.",
-    duration: "One Academic Year",
-    capacity: "5 Teams",
-    applicationStatus: "opened",
-    startDate: "September 2025",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/students-library-study.png`,
-    buttonText: "APPLY NOW",
-    highlights: ["Project Supervision", "Technical Resources", "Methodology Support", "Thesis Assistance"]
-  }
-]
+import { useState, useEffect } from 'react'
+import { getStudentPrograms, StudentProgram } from '@/lib/student-programs'
 
 export default function StudentProgramsSection() {
+  const [programs, setPrograms] = useState<StudentProgram[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchPrograms = async () => {
+      try {
+        const data = await getStudentPrograms()
+        setPrograms(data)
+      } catch (error) {
+        console.error('Failed to fetch student programs:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPrograms()
+  }, [])
+
+  if (loading) {
+    return (
+      <section className="bg-white py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="font-merriweather text-4xl font-bold text-[#1A1A1A] mb-4">
+              Student Programs
+            </h2>
+            <div className="w-20 h-1 bg-[#FDB813] mx-auto rounded-full mb-6"></div>
+            <p className="font-inter text-[#555555] text-lg max-w-2xl mx-auto">
+              Loading programs...
+            </p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className="bg-white py-16">
       <div className="container mx-auto px-4">
@@ -46,7 +59,7 @@ export default function StudentProgramsSection() {
 
         {/* Programs Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-6xl mx-auto">
-          {programs.map((program) => (
+          {programs.map((program: StudentProgram) => (
             <div 
               key={program.id} 
               className="bg-[#F8F8F8] rounded-xl sm:rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 group relative"
@@ -128,7 +141,7 @@ export default function StudentProgramsSection() {
                   </div>
 
                   <Button className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-4 sm:px-6 py-2 sm:py-3 w-full text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 focus:ring-2 focus:ring-[#003366] focus:ring-offset-2 group-hover:scale-[1.02]">
-                    {program.buttonText}
+                    APPLY NOW
                   </Button>
                 </div>
               </div>

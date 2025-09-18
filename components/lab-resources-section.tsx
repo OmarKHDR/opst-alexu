@@ -1,51 +1,33 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Play, BookOpen, Clock, Tag } from 'lucide-react'
-
-const resources = [
-  {
-    id: 1,
-    title: "Introduction to Optical Communications",
-    tags: ["Video Guide", "Beginner", "Communications"],
-    description: "Comprehensive introduction to optical communication systems covering fundamental principles, fiber optic technologies, and signal processing techniques. Perfect for students beginning their journey in optical engineering.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`,
-    duration: "45 minutes",
-    level: "Beginner",
-    type: "Video Tutorial"
-  },
-  {
-    id: 2,
-    title: "Advanced Photonic Device Design",
-    tags: ["Video Guide", "Advanced", "Photonics"],
-    description: "In-depth exploration of photonic device design principles, fabrication techniques, and performance optimization. Covers cutting-edge research methodologies and practical applications in modern technology.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`,
-    duration: "60 minutes",
-    level: "Advanced",
-    type: "Technical Workshop"
-  },
-  {
-    id: 3,
-    title: "Solar Cell Efficiency Optimization",
-    tags: ["Video Guide", "Intermediate", "Solar Technology"],
-    description: "Detailed analysis of solar cell technologies, efficiency improvement techniques, and sustainable energy applications. Includes practical examples and real-world case studies from current research.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`,
-    duration: "50 minutes",
-    level: "Intermediate",
-    type: "Research Seminar"
-  },
-  {
-    id: 4,
-    title: "Quantum Optics Fundamentals",
-    tags: ["Video Guide", "Advanced", "Quantum"],
-    description: "Exploration of quantum optical phenomena, quantum communication protocols, and emerging applications in quantum computing. Suitable for advanced students and researchers in the field.",
-    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/research-placeholder.png`,
-    duration: "75 minutes",
-    level: "Advanced",
-    type: "Lecture Series"
-  }
-]
+import { getResources, Resource } from '@/lib/resources'
 
 export default function LabResourcesSection() {
+  const [resources, setResources] = useState<Resource[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        setLoading(true)
+        const data = await getResources()
+        setResources(data)
+      } catch (err) {
+        setError('Failed to load resources')
+        console.error('Error fetching resources:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchResources()
+  }, [])
+
   return (
     <section className="bg-white py-16">
       <div className="container mx-auto px-4">
@@ -60,8 +42,35 @@ export default function LabResourcesSection() {
           </p>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="max-w-4xl mx-auto text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#FDB813]"></div>
+            <p className="mt-4 text-[#555555] font-inter">Loading resources...</p>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="max-w-4xl mx-auto text-center py-12">
+            <p className="text-red-600 font-inter mb-4">{error}</p>
+            <Button
+              onClick={() => window.location.reload()}
+              className="bg-[#FDB813] hover:bg-[#FDB813]/90 text-[#003366]"
+            >
+              Try Again
+            </Button>
+          </div>
+        )}
+
         {/* Resources Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-4xl mx-auto">
+          {!loading && !error && resources.length === 0 && (
+            <div className="col-span-full text-center py-12">
+              <p className="text-[#555555] font-inter">No resources found.</p>
+            </div>
+          )}
+
           {resources.map((resource) => (
             <div 
               key={resource.id} 

@@ -1,59 +1,32 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Building2, MapPin, Clock, Users } from 'lucide-react'
-
-const researchOpportunities = [
-  {
-    id: 1,
-    title: "PhD Research Position in Optical Communications",
-    company: "OPST Laboratory",
-    description: "Exciting PhD research opportunity focusing on advanced fiber optic communication systems and signal processing. Work alongside leading researchers on cutting-edge projects with full funding and international collaboration opportunities.",
-    tags: ["onsite", "full time", "funded", "PhD"],
-    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
-    location: "Alexandria, Egypt",
-    duration: "3-4 years",
-    deadline: "March 15, 2025"
-  },
-  {
-    id: 2,
-    title: "Master's Research in Solar Technology",
-    company: "Alexandria University",
-    description: "Master's research position in photovoltaic systems and renewable energy technologies. Opportunity to work on innovative solar cell designs and energy storage solutions with industry partnerships.",
-    tags: ["onsite", "full time", "research grant", "Master's"],
-    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
-    location: "Alexandria, Egypt",
-    duration: "2 years",
-    deadline: "April 30, 2025"
-  },
-  {
-    id: 3,
-    title: "Research Assistant in Photonics",
-    company: "CSMNP Center",
-    description: "Research assistant opportunity in photonic device development and quantum optics. Gain hands-on experience with state-of-the-art laboratory equipment and contribute to groundbreaking research publications.",
-    tags: ["onsite", "part time", "stipend", "Undergraduate"],
-    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
-    location: "Alexandria, Egypt",
-    duration: "1 year",
-    deadline: "February 28, 2025"
-  },
-  {
-    id: 4,
-    title: "Postdoctoral Fellowship in Quantum Optics",
-    company: "International Collaboration",
-    description: "Prestigious postdoctoral fellowship in quantum optical systems and quantum communication. Opportunity for international research collaboration and access to world-class facilities.",
-    tags: ["onsite", "full time", "fellowship", "Postdoc"],
-    logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/company-placeholder.png`,
-    location: "Multiple Locations",
-    duration: "2-3 years",
-    deadline: "January 31, 2025"
-  }
-]
+import { getOpportunities, Opportunity } from '@/lib/opportunities'
 
 export default function ResearchOpportunitiesSection() {
+  const [opportunities, setOpportunities] = useState<Opportunity[]>([])
+  const [loading, setLoading] = useState(true)
   const [showAll, setShowAll] = useState(false)
-  const displayedOpportunities = showAll ? researchOpportunities : researchOpportunities.slice(0, 2)
+
+  useEffect(() => {
+    const fetchOpportunities = async () => {
+      try {
+        const data = await getOpportunities()
+        const researchOpportunities = data.filter(opp => opp.type === 'Research Opportunity')
+        setOpportunities(researchOpportunities)
+      } catch (error) {
+        console.error('Failed to fetch research opportunities:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchOpportunities()
+  }, [])
+
+  const displayedOpportunities = showAll ? opportunities : opportunities.slice(0, 2)
 
   return (
     <section className="bg-white py-16">
@@ -146,9 +119,9 @@ export default function ResearchOpportunitiesSection() {
           </div>
 
           {/* See More Button */}
-          {researchOpportunities.length > 2 && (
+          {opportunities.length > 2 && (
             <div className="text-center mt-8">
-              <Button 
+              <Button
                 onClick={() => setShowAll(!showAll)}
                 className="bg-[#FDB813] hover:bg-[#FDB813]/90 text-[#003366] font-inter font-medium px-6 py-3 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2"
               >

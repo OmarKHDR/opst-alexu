@@ -1,58 +1,37 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Clock, Users, MapPin, Calendar, Tag } from 'lucide-react'
+import { getActivities, Activity } from '@/lib/activities'
 
 const categories = ['All', 'Seminars', 'Workshops', 'Events']
 
-const activities = [
-  {
-    id: 1,
-    title: "Weekly Research Seminar",
-    description: "Regular presentations by lab members, visiting scholars, and guest speakers covering current research developments, methodological advances, and collaborative opportunities within the field of optics and photonics.",
-    duration: "2 hours",
-    remainingSeats: "25",
-    location: "Conference Room A",
-    date: "Every Wednesday",
-    image: "/conference-presentation.png",
-    category: "Seminars",
-    level: "All Levels",
-    speaker: "Various Researchers"
-  },
-  {
-    id: 2,
-    title: "Advanced Photonics Workshop",
-    description: "Intensive hands-on training sessions designed to teach advanced laboratory techniques, equipment operation, and methodological approaches relevant to modern photonics and optical engineering research.",
-    duration: "4 hours",
-    remainingSeats: "15",
-    location: "Practical Engineering Lab Hall A",
-    date: "Monthly",
-    image: "/conference-presentation.png",
-    category: "Workshops",
-    level: "Intermediate",
-    speaker: "Dr. Sarah Johnson"
-  },
-  {
-    id: 3,
-    title: "Distinguished Guest Lecture",
-    description: "Presentations by distinguished researchers, industry leaders, and international collaborators sharing cutting-edge research findings and emerging trends in engineering and technology applications.",
-    duration: "2 hours",
-    remainingSeats: "50",
-    location: "Main Auditorium",
-    date: "Quarterly",
-    image: "/conference-presentation.png",
-    category: "Events",
-    level: "All Levels",
-    speaker: "International Experts"
-  }
-]
-
 export default function LabActivitiesSection() {
   const [activeCategory, setActiveCategory] = useState('All')
+  const [activities, setActivities] = useState<Activity[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const filteredActivities = activities.filter(activity => 
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        setLoading(true)
+        const data = await getActivities()
+        setActivities(data)
+      } catch (err) {
+        setError('Failed to load activities')
+        console.error('Error fetching activities:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchActivities()
+  }, [])
+
+  const filteredActivities = activities.filter(activity =>
     activeCategory === 'All' || activity.category === activeCategory
   )
 
@@ -89,8 +68,35 @@ export default function LabActivitiesSection() {
           </div>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="max-w-4xl mx-auto text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#003366]"></div>
+            <p className="mt-4 text-[#555555] font-inter">Loading activities...</p>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="max-w-4xl mx-auto text-center py-12">
+            <p className="text-red-600 font-inter mb-4">{error}</p>
+            <Button
+              onClick={() => window.location.reload()}
+              className="bg-[#003366] hover:bg-[#003366]/90 text-white"
+            >
+              Try Again
+            </Button>
+          </div>
+        )}
+
         {/* Activities List */}
         <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
+          {!loading && !error && filteredActivities.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-[#555555] font-inter">No activities found.</p>
+            </div>
+          )}
+
           {filteredActivities.map((activity) => (
             <div 
               key={activity.id} 
@@ -142,7 +148,7 @@ export default function LabActivitiesSection() {
                       <Users size={12} className="sm:w-3.5 sm:h-3.5 text-[#3399FF]" />
                       <div>
                         <span className="font-inter font-medium text-[#1A1A1A] block">Available</span>
-                        <span className="font-inter text-[#555555]">{activity.remainingSeats} seats</span>
+                        <span className="font-inter text-[#555555]">{activity.seatsAvailable} seats</span>
                       </div>
                     </div>
                     <div className="flex items-center gap-1.5 sm:gap-2 text-xs">
