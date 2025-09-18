@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Building2, MapPin, Clock, DollarSign, Briefcase } from 'lucide-react'
 import { getOpportunities, Opportunity } from '@/lib/opportunities'
@@ -114,9 +115,11 @@ export default function JobOpportunitiesSection() {
                 </div>
 
                 {/* Apply Button */}
-                <Button className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-4 sm:px-6 py-2 w-full text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 focus:ring-2 focus:ring-[#003366] focus:ring-offset-2 group-hover:scale-[1.02]">
-                  APPLY NOW
-                </Button>
+                <Link href={`${process.env.NEXT_PUBLIC_BASE_PATH}/contact?subject=${encodeURIComponent(`Application for ${job.title}`)}&message=${encodeURIComponent(`I am interested in applying for the ${job.title} position at ${job.company}.`)}`}>
+                  <Button className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-4 sm:px-6 py-2 w-full text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 focus:ring-2 focus:ring-[#003366] focus:ring-offset-2 group-hover:scale-[1.02]">
+                    APPLY NOW
+                  </Button>
+                </Link>
               </div>
             </div>
           ))}

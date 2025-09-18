@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Clock, Users, MapPin, Calendar, Tag } from 'lucide-react'
 import { getActivities, Activity } from '@/lib/activities'
@@ -180,9 +181,11 @@ export default function LabActivitiesSection() {
                       </div>
                     </div>
                     
-                    <Button className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-4 sm:px-6 py-2 w-full sm:w-auto text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 focus:ring-2 focus:ring-[#003366] focus:ring-offset-2 group-hover:scale-105">
-                      REGISTER
-                    </Button>
+                    <Link href={`${process.env.NEXT_PUBLIC_BASE_PATH}/contact?subject=${encodeURIComponent(`Registration for ${activity.title}`)}&message=${encodeURIComponent(`I am interested in registering for the ${activity.title} activity.`)}`}>
+                      <Button className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-4 sm:px-6 py-2 w-full sm:w-auto text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 focus:ring-2 focus:ring-[#003366] focus:ring-offset-2 group-hover:scale-105">
+                        REGISTER
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </div>

@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Header from '@/components/header'
 import ResearchTopicsSection from '@/components/research-topics-section'
 import ProjectsSection from '@/components/projects-section'
@@ -9,13 +10,21 @@ import CollaborativeWorkSection from '@/components/collaborative-work-section'
 import Footer from '@/components/footer'
 
 export default function ResearchPage() {
-  const [selectedTopicId, setSelectedTopicId] = useState<number | undefined>(undefined)
+  const [selectedTopicId, setSelectedTopicId] = useState<string | undefined>(undefined)
+  const searchParams = useSearchParams()
 
-  const handleScrollToProjects = (topicId: number) => {
+  useEffect(() => {
+    const topic = searchParams.get('topic')
+    if (topic) {
+      setSelectedTopicId(topic)
+    }
+  }, [searchParams])
+
+  const handleScrollToProjects = (topicId: string) => {
     setSelectedTopicId(topicId)
   }
 
-  const handleTopicChange = (topicId: number) => {
+  const handleTopicChange = (topicId: string) => {
     setSelectedTopicId(topicId)
   }
 

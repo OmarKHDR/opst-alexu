@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { getHomeSection } from '@/lib/generic'
@@ -166,12 +167,13 @@ export default function ResearchSection() {
 
                   {/* Button at Bottom */}
                   <div className="mt-auto">
-                    <Button
-                      className="bg-[#FDB813] hover:bg-[#FDB813]/90 text-[#003366] font-inter font-medium w-full shadow-lg"
-                      onClick={() => window.location.href = `/research?topic=${encodeURIComponent(researchTopics[currentSlide].title)}`}
-                    >
-                      KNOW MORE
-                    </Button>
+                    <Link href={`${process.env.NEXT_PUBLIC_BASE_PATH}/research?topic=${encodeURIComponent(researchTopics[currentSlide].id)}`}>
+                      <Button
+                        className="bg-[#FDB813] hover:bg-[#FDB813]/90 text-[#003366] font-inter font-medium w-full shadow-lg"
+                      >
+                        KNOW MORE
+                      </Button>
+                    </Link>
                   </div>
                 </div>
 

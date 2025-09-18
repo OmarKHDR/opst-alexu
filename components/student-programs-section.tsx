@@ -1,6 +1,7 @@
 "use client"
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Clock, Users, Calendar, CheckCircle } from 'lucide-react'
 import { useState, useEffect } from 'react'
@@ -140,9 +141,11 @@ export default function StudentProgramsSection() {
                     </div>
                   </div>
 
-                  <Button className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-4 sm:px-6 py-2 sm:py-3 w-full text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 focus:ring-2 focus:ring-[#003366] focus:ring-offset-2 group-hover:scale-[1.02]">
-                    APPLY NOW
-                  </Button>
+                  <Link href={`${process.env.NEXT_PUBLIC_BASE_PATH}/contact?subject=${encodeURIComponent(`Application for ${program.title}`)}&message=${encodeURIComponent(`I am interested in applying for the ${program.title} student program.`)}`}>
+                    <Button className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-4 sm:px-6 py-2 sm:py-3 w-full text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 focus:ring-2 focus:ring-[#003366] focus:ring-offset-2 group-hover:scale-[1.02]">
+                      APPLY NOW
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>

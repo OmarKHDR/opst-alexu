@@ -7,6 +7,8 @@ export interface Resource {
   duration: string;
   level: string;
   type: string;
+  callToAction: string;
+  link: string;
 }
 
 const CACHE_KEY = 'contentful.resources';
@@ -55,6 +57,8 @@ export async function getResources(): Promise<Resource[]> {
       duration: item.fields.duration,
       level: item.fields.level,
       type: item.fields.type,
+      callToAction: item.fields.callToAction,
+      link: item.fields.link,
     };
   });
 

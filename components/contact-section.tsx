@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Facebook, Linkedin, Youtube, Twitter, MapPin, Mail, Phone, Send, User, MessageSquare } from 'lucide-react'
 import { getContactInfo, ContactInfo } from '@/lib/generic'
@@ -16,6 +17,7 @@ export default function ContactSection() {
     subject: '',
     message: ''
   })
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     const fetchContactInfo = async () => {
@@ -32,6 +34,17 @@ export default function ContactSection() {
 
     fetchContactInfo()
   }, [])
+
+  useEffect(() => {
+    const subject = searchParams.get('subject')
+    const message = searchParams.get('message')
+    if (subject) {
+      setFormData(prev => ({...prev, subject}))
+    }
+    if (message) {
+      setFormData(prev => ({...prev, message}))
+    }
+  }, [searchParams])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
