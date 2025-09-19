@@ -9,13 +9,13 @@ import { Menu, X } from 'lucide-react'
 const navigationItems = [
   { name: 'Home', path: '/' },
   { name: 'About', path: '/about' },
-  { name: 'Media', path: '/media' },
   { name: 'People', path: '/people' },
   { name: 'Research', path: '/research' },
   { name: 'Publication', path: '/publication' },
   { name: 'Opportunities', path: '/opportunities' },
   { name: 'Engagements', path: '/engagements' },
   { name: 'Contact', path: '/contact' },
+  { name: 'Media', path: '/media' },
 ]
 
 export default function Header() {
