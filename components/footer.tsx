@@ -77,7 +77,7 @@ export default function Footer() {
             <div className="flex space-x-4">
               {contactInfo?.facebook && (
                 <Link
-                  href={contactInfo.facebook}
+                  href={contactInfo.facebook.startsWith('http') ? contactInfo.facebook : `https://${contactInfo.facebook}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 bg-white/10 rounded-xl hover:bg-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] transform hover:scale-110"
@@ -88,7 +88,7 @@ export default function Footer() {
               )}
               {contactInfo?.linkedin && (
                 <Link
-                  href={contactInfo.linkedin}
+                  href={contactInfo.linkedin.startsWith('http') ? contactInfo.linkedin : `https://${contactInfo.linkedin}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 bg-white/10 rounded-xl hover:bg-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] transform hover:scale-110"
@@ -99,7 +99,7 @@ export default function Footer() {
               )}
               {contactInfo?.youtube && (
                 <Link
-                  href={contactInfo.youtube}
+                  href={contactInfo.youtube.startsWith('http') ? contactInfo.youtube : `https://${contactInfo.youtube}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 bg-white/10 rounded-xl hover:bg-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] transform hover:scale-110"
@@ -110,7 +110,7 @@ export default function Footer() {
               )}
               {contactInfo?.twitter && (
                 <Link
-                  href={contactInfo.twitter}
+                  href={contactInfo.twitter.startsWith('http') ? contactInfo.twitter : `https://${contactInfo.twitter}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 bg-white/10 rounded-xl hover:bg-[#FDB813] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDB813] focus:ring-offset-2 focus:ring-offset-[#003366] transform hover:scale-110"

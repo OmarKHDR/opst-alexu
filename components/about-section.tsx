@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { getHomeSection, GenericSection } from '@/lib/generic'
+import Link from 'next/link'
 
 export default function AboutSection() {
   const [aboutSection, setAboutSection] = useState<GenericSection | null>(null)
@@ -70,12 +71,14 @@ export default function AboutSection() {
               className="font-inter text-[#555555] leading-relaxed mb-6 sm:mb-8 text-sm sm:text-base prose prose-sm max-w-none"
               dangerouslySetInnerHTML={{ __html: aboutSection?.body ? aboutSection.body.substring(0, 300) + '...' : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' }}
             />
-            <Button
-              className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-4 sm:px-6 py-3 w-full sm:w-auto"
-              onClick={() => window.location.href = '/about'}
-            >
-              LEARN MORE
-            </Button>
+            <Link href='/about'>
+              <Button
+                className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-4 sm:px-6 py-3 w-full sm:w-auto"
+              >
+                LEARN MORE
+              </Button>
+            </Link>
+
           </div>
         </div>
       </div>

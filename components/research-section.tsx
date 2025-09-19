@@ -167,7 +167,7 @@ export default function ResearchSection() {
 
                   {/* Button at Bottom */}
                   <div className="mt-auto">
-                    <Link href={`${process.env.NEXT_PUBLIC_BASE_PATH}/research?topic=${encodeURIComponent(researchTopics[currentSlide].id)}`}>
+                    <Link href={`/research?topic=${encodeURIComponent(researchTopics[currentSlide].id)}`}>
                       <Button
                         className="bg-[#FDB813] hover:bg-[#FDB813]/90 text-[#003366] font-inter font-medium w-full shadow-lg"
                       >

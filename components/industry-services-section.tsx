@@ -98,7 +98,7 @@ export default function IndustryServicesSection() {
 
         {/* Contact Button */}
         <div className="text-center">
-          <Link href={`${process.env.NEXT_PUBLIC_BASE_PATH}/contact?subject=${encodeURIComponent('Industry Services Inquiry')}&message=${encodeURIComponent('I am interested in learning more about your industry services and technical consulting.')}`}>
+          <Link href={`/contact?subject=${encodeURIComponent('Industry Services Inquiry')}&message=${encodeURIComponent('I am interested in learning more about your industry services and technical consulting.')}`}>
             <Button className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-4 sm:px-8 py-2 sm:py-3 text-xs sm:text-sm w-full sm:w-auto">
               CONTACT US NOW
             </Button>

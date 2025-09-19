@@ -271,7 +271,7 @@ export default function ContactSection() {
                 <div className="flex gap-3">
                   {contactInfo?.facebook && (
                     <a
-                      href={contactInfo.facebook}
+                      href={contactInfo.facebook.startsWith('http') ? contactInfo.facebook : `https://${contactInfo.facebook}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-12 h-12 bg-[#1877F2] rounded-2xl flex items-center justify-center text-white hover:bg-[#1877F2]/90 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#1877F2] focus:ring-offset-2"
@@ -282,7 +282,7 @@ export default function ContactSection() {
                   )}
                   {contactInfo?.linkedin && (
                     <a
-                      href={contactInfo.linkedin}
+                      href={contactInfo.linkedin.startsWith('http') ? contactInfo.linkedin : `https://${contactInfo.linkedin}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-12 h-12 bg-[#0A66C2] rounded-2xl flex items-center justify-center text-white hover:bg-[#0A66C2]/90 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#0A66C2] focus:ring-offset-2"
@@ -293,7 +293,7 @@ export default function ContactSection() {
                   )}
                   {contactInfo?.youtube && (
                     <a
-                      href={contactInfo.youtube}
+                      href={contactInfo.youtube.startsWith('http') ? contactInfo.youtube : `https://${contactInfo.youtube}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-12 h-12 bg-[#FF0000] rounded-2xl flex items-center justify-center text-white hover:bg-[#FF0000]/90 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#FF0000] focus:ring-offset-2"
@@ -304,7 +304,7 @@ export default function ContactSection() {
                   )}
                   {contactInfo?.twitter && (
                     <a
-                      href={contactInfo.twitter}
+                      href={contactInfo.twitter.startsWith('http') ? contactInfo.twitter : `https://${contactInfo.twitter}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-12 h-12 bg-[#1DA1F2] rounded-2xl flex items-center justify-center text-white hover:bg-[#1DA1F2]/90 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#1DA1F2] focus:ring-offset-2"

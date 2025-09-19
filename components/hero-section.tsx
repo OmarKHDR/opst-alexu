@@ -74,7 +74,7 @@ export default function HeroSection() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center w-full sm:w-auto">
-          <Link href={`${process.env.NEXT_PUBLIC_BASE_PATH}/research`}>
+          <Link href={`/research`}>
             <Button
               className="bg-[#003366] hover:bg-[#003366]/90 text-white px-4 sm:px-8 py-3 text-base sm:text-lg font-inter font-medium w-full sm:w-auto"
               size="lg"
@@ -82,7 +82,7 @@ export default function HeroSection() {
               EXPLORE OUR RESEARCH
             </Button>
           </Link>
-          <Link href={`${process.env.NEXT_PUBLIC_BASE_PATH}/people`}>
+          <Link href={`/people`}>
             <Button
               className="bg-[#FDB813] hover:bg-[#FDB813]/90 text-[#003366] px-4 sm:px-8 py-3 text-base sm:text-lg font-inter font-medium w-full sm:w-auto"
               size="lg"

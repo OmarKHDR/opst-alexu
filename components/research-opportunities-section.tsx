@@ -110,7 +110,7 @@ export default function ResearchOpportunitiesSection() {
 
                   {/* Apply Button */}
                   <div className="flex-shrink-0 w-full sm:w-auto">
-                    <Link href={`${process.env.NEXT_PUBLIC_BASE_PATH}/contact?subject=${encodeURIComponent(`Application for ${opportunity.title}`)}&message=${encodeURIComponent(`I am interested in applying for the ${opportunity.title} research opportunity at ${opportunity.company}.`)}`}>
+                    <Link href={`/contact?subject=${encodeURIComponent(`Application for ${opportunity.title}`)}&message=${encodeURIComponent(`I am interested in applying for the ${opportunity.title} research opportunity at ${opportunity.company}.`)}`}>
                       <Button className="bg-[#003366] hover:bg-[#003366]/90 text-white font-inter font-medium px-4 sm:px-6 py-2 w-full sm:w-auto text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1 focus:ring-2 focus:ring-[#003366] focus:ring-offset-2 group-hover:scale-105">
                         APPLY NOW
                       </Button>
